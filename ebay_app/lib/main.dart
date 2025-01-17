@@ -1,4 +1,5 @@
-import 'package:ebay_app/home_screen.dart';
+//import 'package:ebay_app/home_screen.dart';
+import 'package:ebay_app/userform.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -37,12 +38,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+      body: const Center(
+        child: UserForm(),
       ),
-      body: HomeScreen(),
     );
   }
 }

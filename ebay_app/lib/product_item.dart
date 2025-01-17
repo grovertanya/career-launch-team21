@@ -4,6 +4,7 @@ class ProductItem {
   final String description;
   final double price;
   final String imageUrl;
+  final String category;
 
   ProductItem({
     required this.id,
@@ -11,5 +12,6 @@ class ProductItem {
     required this.description,
     required this.price,
     required this.imageUrl,
+    required this.category,
   });
 }
