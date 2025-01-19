@@ -1,7 +1,8 @@
 #classes.py
 
 # List of valid categories
-categories = ["Academic Supplies","Appliances", "Clothing", "Electronics", "Furniture", "Dorm Essentials", "Tickets","Other"]
+
+categories = ["Academic Supplies","Appliances", "Clothing", "Electronics", "Furniture", "Dorm Essentials", "Tickets","Other"]\
 
 # The user class keeps track of each individual user: Name, Rating, Number of Ratings, Items Listed, Wishlist
 class User:
