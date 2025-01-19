@@ -16,7 +16,7 @@ class ProfileView extends StatelessWidget {
           'User Profile',
           style: TextStyle(
             fontSize: 20,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: Colors.blueAccent,

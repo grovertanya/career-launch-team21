@@ -6,6 +6,6 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ProfileView(username: 'npadmnabhan', dateJoined: '12/03/2024', rating: 4.9, ratings: 5, );
+    return ProfileView(username: 'npadmanabhan', dateJoined: '12/03/2024', rating: 4.9, ratings: 7,);
   }
 }
