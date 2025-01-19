@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:frontend/profile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -14,18 +14,13 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 class _HomeScreenState extends State<HomeScreen> {
- 
-  final List<AssetImage> imageList = [
-    AssetImage('assets/images/fridge.webp'),
-    AssetImage('assets/images/pillow.jpg'),
-    AssetImage('assets/images/table.webp'),
-  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 175, 202, 250),
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.blueAccent,
         elevation: 0,
         title: CupertinoSearchTextField(
           backgroundColor: Colors.white,
@@ -41,162 +36,95 @@ class _HomeScreenState extends State<HomeScreen> {
           label: 'Wishlist',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
+          icon: GestureDetector(
+            child: Icon(Icons.person),
+            onTap: () {
+              Navigator.pushAndRemoveUntil(
+                context, 
+                MaterialPageRoute(builder: (context) => Profile()), 
+                (route) => false,
+              );
+            },
+          ),
           label: 'Profile',
         ),
       ],
-      backgroundColor: Colors.red,
-      )
-      ,
+      backgroundColor: Colors.blueAccent,
+      ),
       body: Container(
-        height: 1000,
+        height: 5000,
         padding: const EdgeInsets.only(top: 50),
-        child: Stack(
+        child: Container(
           alignment: Alignment.center,
-          children: [
-            Row(
+          child: 
+            Column(
               children: [
-                Padding(padding: const EdgeInsets.all(16)),
-                Column(
+                Row(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.only(bottom: 50),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: SizedBox(
-                              width: 75,
-                              height: 75,
-                              child: Image.asset(
-                                'assets/images/clothingIcon.png',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Padding(padding: const EdgeInsets.only(left: 16)),
-                        ],
-                      ),
-                    ),
-                    Row(
+                    Padding(padding: const EdgeInsets.all(16)),
+                    Column(
                       children: [
-                        Padding(padding: const EdgeInsets.only(bottom: 50),),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: SizedBox(
-                            width: 75,
-                            height: 75,
-                            child: Image.asset(
-                              'assets/images/appliances.png',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 16)),
-                        Text(
-                          'Applinces',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        buildCategoryDisplay('Clothing', 'assets/images/clothingIcon.png'),
+                        buildCategoryDisplay('Appliances', 'assets/images/appliances.png'),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        buildCategoryDisplay('Dorm \nEssentials', 'assets/images/dormIcon.png'),
+                        buildCategoryDisplay('Tickets', 'assets/images/ticketIcon.png')
                       ],
                     ),
                   ],
                 ),
-                Column(
+                Row(
                   children: [
-                    Container(
-                      padding: EdgeInsets.only(bottom: 50),
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: SizedBox(
-                              width: 75,
-                              height: 75,
-                              child: Image.asset(
-                                'assets/images/dormIcon.png',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Padding(padding: const EdgeInsets.only(left: 16)),
-                          Text(
-                            'Dorm \nEssentials',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Row(
+                    Padding(padding: const EdgeInsets.all(16)),
+                    Column(
                       children: [
-                        Padding(padding: const EdgeInsets.only(bottom: 20),),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: SizedBox(
-                            width: 75,
-                            height: 75,
-                            child: Image.asset(
-                              'assets/images/ticketIcon.png',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Padding(padding: const EdgeInsets.only(left: 16)),
-                        Text(
-                          'Tickets',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        buildCategoryDisplay('Academic \nSupplies', 'assets/images/school.png'),
+                        buildCategoryDisplay('Electronics', 'assets/images/electronics.png'),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        buildCategoryDisplay('Furniture', 'assets/images/furniture.png'),
+                        buildCategoryDisplay('More', 'assets/images/more.png')
                       ],
                     ),
                   ],
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: Text(
-                'Newly Added',
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                )
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: CarouselSlider(
-                options: CarouselOptions(
-                  height: 200.0,
-                  autoPlay: false,
-                  enlargeCenterPage: false,
-                  enableInfiniteScroll: true,
-                  viewportFraction: 0.8,
-                ),
-                items: imageList.map((ImageProvider) {
-                  return Container(
-                    margin: const EdgeInsets.all(5.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      image: DecorationImage(
-                        image: ImageProvider,
-                        fit: BoxFit.cover,
-                      )
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-          ],
         ),
+      ),
+    );
+  }
+
+  Widget buildCategoryDisplay(String category, String imageURL) {
+    return Container(
+      padding: const EdgeInsets.only(bottom: 100),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: SizedBox(
+              width: 75,
+              height: 75,
+              child: Image.asset(
+                imageURL,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Padding(padding: const EdgeInsets.only(left: 16)),
+          Text(
+            category,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }

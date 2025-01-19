@@ -1,4 +1,4 @@
-import 'package:ebay_app/product_item.dart';
+import 'package:frontend/product_item.dart';
 import 'package:flutter/cupertino.dart';
 
 class ShoppingScreen extends StatefulWidget {
