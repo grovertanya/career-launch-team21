@@ -41,6 +41,21 @@ def get_users():
 
 # POST METHODS
 
+# add a user
+
+
+@app.route('/users', methods = ['POST'])
+def add_user():
+    data = request.get_json()
+    
+    if 'name' not in data:
+        return jsonify({"error": "Missing required field: 'name'"}), 400
+    
+    new_user = User(data['name'], rating=data.get('rating', 0.0))
+    users.append(new_user)
+    
+    return jsonify({"message": "User added successfully", "name": new_user.name}), 201
+
 # add an item
 @app.route('/items', methods=['POST'])
 def add_item():
@@ -79,10 +94,7 @@ def add_item():
 # rate a user
 @app.route('/users/rate', methods=['POST'])
 def rate_user():
-    """
-    Rate an existing user (seller).
-    Expects JSON payload with 'seller_name' and 'rating'.
-    """
+
     data = request.get_json()
 
     if 'seller_name' not in data or 'rating' not in data:
@@ -104,3 +116,4 @@ def rate_user():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
