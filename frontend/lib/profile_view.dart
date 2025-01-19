@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/itemlisting.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key, required this.username, required this.dateJoined, required this.rating, required this.ratings});
@@ -51,7 +52,9 @@ class ProfileView extends StatelessWidget {
             height: 85,
             width: 300,
             child: ElevatedButton(
-              onPressed: (){}, 
+              onPressed: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ItemListing()));
+              }, 
               child: Text(
                 'List an Item',
                 style: TextStyle(
