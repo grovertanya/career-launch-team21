@@ -1,7 +1,7 @@
 #classes.py
 
 # List of valid categories
-categories = ["Academic Supplies","Appliances" "Clothing", "Electronics", "Furniture", "Dorm Essentials", "Tickets","Other"]
+categories = ["Academic Supplies","Appliances", "Clothing", "Electronics", "Furniture", "Dorm Essentials", "Tickets","Other"]
 
 # The user class keeps track of each individual user: Name, Rating, Number of Ratings, Items Listed, Wishlist
 class User:
@@ -37,11 +37,11 @@ class User:
     
 # The item class keeps track of each individual item: Name, Description, Price, Category, Seller, Sold Status
 class Item:
-    def __init__(self, name, description, price, category, seller = None):
+    def __init__(self, name, price, category, seller = None):
         if category not in categories:
             raise ValueError(f"Invalid category: '{category}'. Valid categories are: {', '.join(categories)}")
         self.name = name  
-        self.description = description
+        #self.description = description
         self.price = price  
         self.category = category 
         self.sold = False  
