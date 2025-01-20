@@ -53,7 +53,7 @@ class ProfileView extends StatelessWidget {
             width: 300,
             child: ElevatedButton(
               onPressed: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ItemListing()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ItemListing(usernameH: username,)));
               }, 
               child: Text(
                 'List an Item',
