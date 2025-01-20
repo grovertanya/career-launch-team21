@@ -8,6 +8,7 @@ app = Flask(__name__)
 
 # Sample data
 users = [User("Alice", 4.5), User("Bob", 4.7)]
+itemnum = 1
 items = [
     Item("Mini Fridge", 50.0, "Appliances", seller=users[0]),
     Item("Desk Lamp", 20.0, "Furniture", seller=users[1]),
@@ -57,6 +58,7 @@ def add_user():
     return jsonify({"message": "User added successfully", "name": new_user.name}), 201
 
 # add an item
+# recieves a JSON object with the item's name, price, category, and the seller's name
 @app.route('/items', methods=['POST'])
 def add_item():
     data = request.get_json()
@@ -92,6 +94,7 @@ def add_item():
 
 
 # rate a user
+# recieves a JSON object with the seller's name and the rating
 @app.route('/users/rate', methods=['POST'])
 def rate_user():
 
