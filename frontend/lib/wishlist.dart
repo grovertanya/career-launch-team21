@@ -8,6 +8,8 @@ class WishlistItem {
   WishlistItem({required this.title, required this.description, required this.imageUrl});
 }
 class WishlistScreen extends StatefulWidget {
+  const WishlistScreen({super.key});
+
   @override
   _WishlistScreenState createState() => _WishlistScreenState();
 }

@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:frontend/profile.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ItemListing extends StatefulWidget {
   const ItemListing({super.key});
@@ -12,8 +15,15 @@ class _ItemListingState extends State<ItemListing> {
 
   final _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController categoryContrller = TextEditingController();
   String errorMessage = '';
   String itemName = 'default';
+  double itemPrice = 0.0;
+  String itemDescription = 'default';
+  String itemCategory = 'default';
+  File _selectedImage = File('');
 
   @override
   Widget build(BuildContext context) {
@@ -49,43 +59,106 @@ class _ItemListingState extends State<ItemListing> {
       ],
       backgroundColor: Colors.blueAccent,
       ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          children: [
-            TextFormField(
-              controller: nameController,
-              decoration: InputDecoration(
-                labelText: 'Item name',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.book),
+      body: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              _pickImageFromGallery();
+            }, 
+            child: const Text(
+              'Pick Image from Gallery',
+              style: TextStyle(
+                color: Colors.blueAccent,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
               ),
-              validator: (value) {
-                if(value==null ||value.isEmpty) {
-                  return 'Incomplete';
-                }
-                return null;
-              }
             ),
-            ElevatedButton(
-                onPressed: () {
-                  if(_formKey.currentState!.validate()) {
-                    setState(() {
-                      errorMessage = '';
-                      itemName = nameController.text;
-                    });
-                  }
-                  else{
-                    setState(() {
-                      errorMessage = 'Please Correct the errors';
-                    });
-                  }
-                }, 
-                child: const Text('Go'),
+          ),
+          Form(
+            key: _formKey,
+            child: Expanded(
+              child: ListView(
+                children: [
+                  TextFormField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Item name',
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.book),
+                    ),
+                    validator: (value) {
+                      if(value==null ||value.isEmpty) {
+                        return 'Incomplete';
+                      }
+                      return null;
+                    }
+                  ),
+                  TextFormField(
+                    controller: priceController,
+                    decoration: InputDecoration(
+                      labelText: 'Item price',
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.money),
+                    ),
+                    validator: (value) {
+                      if(value==null ||value.isEmpty) {
+                        return 'Incomplete';
+                      }
+                      return null;
+                    }
+                  ),
+                  TextFormField(
+                    controller: descriptionController,
+                    decoration: InputDecoration(
+                      labelText: 'Item description',
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.book),
+                    ),
+                    validator: (value) {
+                      if(value==null ||value.isEmpty) {
+                        return 'Incomplete';
+                      }
+                      return null;
+                    }
+                  ),
+                  TextFormField(
+                    controller: categoryContrller,
+                    decoration: InputDecoration(
+                      labelText: 'Category',
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.book),
+                    ),
+                    validator: (value) {
+                      if(value==null ||value.isEmpty) {
+                        return 'Incomplete';
+                      }
+                      return null;
+                    }
+                  ),
+                  SizedBox(height: 20,),
+                  Image.file(_selectedImage),
+                  ElevatedButton(
+                      onPressed: () {
+                        if(_formKey.currentState!.validate()) {
+                          //need to send all data to backend in an item object
+                        }
+                      }, 
+                      child: const Text('Go'),
+                    ),
+                ],
               ),
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  Future _pickImageFromGallery() async {
+    final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _selectedImage = File(returnedImage!.path);
+    });
   }
 }
