@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:http/http.dart' as http;
 
 class ApiService {
   ApiService();
-  static const String baseUrl = "http://127.0.0.1:5000";  // Replace with actual backend URL
+  static const String baseUrl = 'http://192.168.1.164:5000';
 
   Future<Map<String, dynamic>> addItem({
     required String name,

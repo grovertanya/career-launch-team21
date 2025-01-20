@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -20,6 +21,8 @@ class _ItemListingState extends State<ItemListing> {
 
   final _formKey = GlobalKey<FormState>();
   final ApiService apiService = ApiService();
+  double? _inputValue;
+  String? _inputValueC;
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -109,8 +112,14 @@ class _ItemListingState extends State<ItemListing> {
                       if(value==null ||value.isEmpty) {
                         return 'Incomplete';
                       }
+                      if(double.tryParse(value) == null) {
+                        _inputValue = 0;
+                      }
                       return null;
-                    }
+                    },
+                    onSaved: (value) {
+                      _inputValue = double.tryParse(value!);
+                    },
                   ),
                   TextFormField(
                     controller: descriptionController,
@@ -138,7 +147,10 @@ class _ItemListingState extends State<ItemListing> {
                         return 'Incomplete';
                       }
                       return null;
-                    }
+                    },
+                    onSaved: (value) {
+                      _inputValueC = value;
+                    },
                   ),
                   SizedBox(height: 20,),
                   Image.file(_selectedImage),
@@ -146,6 +158,7 @@ class _ItemListingState extends State<ItemListing> {
                       onPressed: () {
                         if(_formKey.currentState!.validate()) {
                           //need to send all data to backend in an item object
+                          _formKey.currentState!.save();
                           _submitItem(context);
                         }
                       }, 
@@ -169,12 +182,14 @@ class _ItemListingState extends State<ItemListing> {
   }
 
   void _submitItem(BuildContext context) async {
+    double valueNum = _inputValue ?? 0.0;
+    String valueStr = _inputValueC ?? '';
     try {
       final result = await apiService.addItem(
         name: '$nameController', 
-        price: double.parse('$priceController'), 
-        category: '$categoryContrller',
-        sellerName: 'nitya',
+        price: valueNum,
+        category: valueStr,
+        sellerName: 'Alice',
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Success: ${result["message"]}')),
