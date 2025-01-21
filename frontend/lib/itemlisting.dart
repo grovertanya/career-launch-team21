@@ -23,6 +23,7 @@ class _ItemListingState extends State<ItemListing> {
   final ApiService apiService = ApiService();
   double? _inputValue;
   String? _inputValueC;
+  String? _inputValueN;
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -99,7 +100,10 @@ class _ItemListingState extends State<ItemListing> {
                         return 'Incomplete';
                       }
                       return null;
-                    }
+                    },
+                    onSaved: (value) {
+                      _inputValueN = value;
+                    },
                   ),
                   TextFormField(
                     controller: priceController,
@@ -183,12 +187,13 @@ class _ItemListingState extends State<ItemListing> {
 
   void _submitItem(BuildContext context) async {
     double valueNum = _inputValue ?? 0.0;
-    String valueStr = _inputValueC ?? '';
+    String valueCat = _inputValueC ?? '';
+    String valueName = _inputValueN ?? '';
     try {
       final result = await apiService.addItem(
-        name: '$nameController', 
+        name: valueName, 
         price: valueNum,
-        category: valueStr,
+        category: valueCat,
         sellerName: 'Alice',
       );
       ScaffoldMessenger.of(context).showSnackBar(

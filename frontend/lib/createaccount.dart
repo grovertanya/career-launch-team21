@@ -1,25 +1,18 @@
-import 'package:frontend/home_screen.dart';
 import 'package:flutter/material.dart';
 
-class UserForm extends StatefulWidget {
-  const UserForm({super.key});
+class CreateAccount extends StatefulWidget {
+  const CreateAccount({super.key});
 
   @override
-  State<UserForm> createState() => _UserFormState();
+  State<CreateAccount> createState() => _CreateAccountState();
 }
 
-class _UserFormState extends State<UserForm> {
+class _CreateAccountState extends State<CreateAccount> {
 
   final _formKey = GlobalKey<FormState>();
-  TextEditingController nameController = TextEditingController();
-  String errorMessage = '';
-  String name = 'default';
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    super.dispose();
-  }
+  String ? _nameVal;
+  String ? _emailVal;
+  String ? _passwordVal;
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +24,21 @@ class _UserFormState extends State<UserForm> {
           child: ListView(
             children: [
               TextFormField(
-                controller: nameController,
                 decoration: InputDecoration(
-                  labelText: 'Name',
+                  labelText: 'Username',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.person),
                 ),
                 validator: (value) {
                   if (value==null || value.isEmpty) {
-                    return 'Please Enter Your Name';
+                    return 'Please Enter a Username';
                   }
                   return null;
                 },
+                onSaved: (value){
+                  _nameVal = value;
+                },
+
               ),
               SizedBox(height: 20,),
               TextFormField(
@@ -59,6 +55,9 @@ class _UserFormState extends State<UserForm> {
                     return 'Please Enter a Valid Email';
                   }
                   return null;
+                },
+                onSaved: (value) {
+                  _emailVal = value;
                 },
               ),
               SizedBox(height: 20,),
@@ -77,24 +76,25 @@ class _UserFormState extends State<UserForm> {
                   }
                   return null;
                 },
+                onSaved: (value) {
+                  _passwordVal = value;
+                },
               ),
               SizedBox(height: 20,),
               ElevatedButton(
                 onPressed: () {
                   if(_formKey.currentState!.validate()) {
                     setState(() {
-                      errorMessage = '';
-                      name = nameController.text;
                     });
-                    Navigator.pushAndRemoveUntil(
-                      context, 
-                      MaterialPageRoute(builder: (context) => HomeScreen(username: name,)), 
-                      (route) => false,
-                    );
+                    //Navigator.pushAndRemoveUntil(
+                     // context, 
+                     // MaterialPageRoute(builder: (context) => HomeScreen(username: name,)), 
+                     // (route) => false,
+                    //);
                   }
                   else{
                     setState(() {
-                      errorMessage = 'Please Correct the errors';
+                      //errorMessage = 'Please Correct the errors';
                     });
                   }
                 }, 
