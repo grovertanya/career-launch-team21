@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   ApiService();
-  static const String baseUrl = 'http://192.168.1.164:5000';
+  static const String baseUrl = 'http://192.168.86.225:5000';
 
   Future<Map<String, dynamic>> addItem({
     required String name,
