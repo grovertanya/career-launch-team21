@@ -66,4 +66,14 @@ class ApiService {
       throw Exception('Error: $e');
     }
   }
+
+  Future<List<dynamic>> fetchItems() 
+    async { 
+    final response = await http.get(Uri.parse('$baseUrl/items')); 
+
+    if (response.statusCode == 200) { 
+      List<dynamic> data = jsonDecode(response.body); return data; 
+    } else { 
+      throw Exception('Failed to load items: ${response.statusCode}'); } 
+    }
 }

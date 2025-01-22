@@ -26,6 +26,7 @@ class _CreateAccountState extends State<CreateAccount> {
           child: Form(
             key: _formKey,
             child: ListView(
+              shrinkWrap: true,
               children: [
                 TextFormField(
                   decoration: InputDecoration(
@@ -86,6 +87,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 ),
                 SizedBox(height: 20,),
                 ElevatedButton(
+                  child: const Text('Create Account'),
                   onPressed: () {
                     if(_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
@@ -97,7 +99,6 @@ class _CreateAccountState extends State<CreateAccount> {
                       );
                     }
                   }, 
-                  child: const Text('Create Account'),
                 ),          
         
               ],
