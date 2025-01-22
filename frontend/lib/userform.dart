@@ -24,84 +24,86 @@ class _UserFormState extends State<UserForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: nameController,
-                decoration: InputDecoration(
-                  labelText: 'Username',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                TextFormField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    labelText: 'Username',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.person),
+                  ),
+                  validator: (value) {
+                    if (value==null || value.isEmpty) {
+                      return 'Please Enter Your Username';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value==null || value.isEmpty) {
-                    return 'Please Enter Your Username';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20,),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.lock),
+                SizedBox(height: 20,),
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.lock),
+                  ),
+                  validator: (value) {
+                    if (value==null || value.isEmpty) {
+                      return 'Please Enter Your Password';
+                    }
+                    if(value.length < 6) {
+                      return 'Please Enter a Valid Password';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value==null || value.isEmpty) {
-                    return 'Please Enter Your Password';
-                  }
-                  if(value.length < 6) {
-                    return 'Please Enter a Valid Password';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20,),
-              ElevatedButton(
-                onPressed: () {
-                  if(_formKey.currentState!.validate()) {
-                    setState(() {
-                      errorMessage = '';
-                      name = nameController.text;
-                    });
+                SizedBox(height: 20,),
+                ElevatedButton(
+                  onPressed: () {
+                    if(_formKey.currentState!.validate()) {
+                      setState(() {
+                        errorMessage = '';
+                        name = nameController.text;
+                      });
+                      Navigator.pushAndRemoveUntil(
+                        context, 
+                        MaterialPageRoute(builder: (context) => HomeScreen()), 
+                        (route) => false,
+                      );
+                    }
+                    else{
+                      setState(() {
+                        errorMessage = 'Please Correct the errors';
+                      });
+                    }
+                  }, 
+                  child: const Text('Go'),
+                ),
+                GestureDetector(
+                  onTap: () {
                     Navigator.pushAndRemoveUntil(
-                      context, 
-                      MaterialPageRoute(builder: (context) => HomeScreen()), 
+                      context,
+                      MaterialPageRoute(builder: (context) => CreateAccount()),
                       (route) => false,
                     );
-                  }
-                  else{
-                    setState(() {
-                      errorMessage = 'Please Correct the errors';
-                    });
-                  }
-                }, 
-                child: const Text('Go'),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => CreateAccount()),
-                    (route) => false,
-                  );
-                },
-                child: Text(
-                  'Create Account',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: const Color.fromARGB(255, 14, 30, 56),
-                  )
-                ),
-              )           
-      
-            ],
+                  },
+                  child: Text(
+                    'Create Account',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: const Color.fromARGB(255, 14, 30, 56),
+                    )
+                  ),
+                )           
+        
+              ],
+            ),
           ),
         ),
       ),
