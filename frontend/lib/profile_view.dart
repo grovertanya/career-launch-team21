@@ -68,7 +68,7 @@ class _ProfileViewState extends State<ProfileView> {
           buildTextSections('      Username', user[0]['username']),
           //buildTextSections('      Date Joined', widget.dateJoined),
           buildTextSections('      Rating', user[0]['rating']),
-          //buildTextSections('      Ratings', user[0]['ratingCount']),
+          buildTextSections('      Ratings', user[0]['ratingCount']),
           Padding(padding: EdgeInsets.only(top: 40)),
           SizedBox(
             height: 85,
