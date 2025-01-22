@@ -29,7 +29,7 @@ def searchCategory():
     category = request.args.get('category')
     filtered_items = search_items(items, category = category)
     
-    result = [{"name": item.name, "price": item.price, "category": item.category} for item in filtered_items]
+    result = [{"name": item.name, "price": item.price, "category": item.category, "seller": item.seller.name} for item in filtered_items]
     return jsonify(result)
 
 # search for an item by name ( search bar )
@@ -93,7 +93,7 @@ def add_item():
             return jsonify({"error": f"Missing field: {field}"}), 400
 
     # Find the seller by name
-    seller = next((user for user in users if user.name == data['seller_name']), None)
+    seller = next((user for user in users if user.username == data['seller_name']), None)
     if not seller:
         return jsonify({"error": "Seller not found"}), 404
 
