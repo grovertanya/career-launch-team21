@@ -4,11 +4,11 @@ import 'package:frontend/home_screen.dart';
 import 'package:frontend/itemlisting.dart';
 
 class ProfileView extends StatefulWidget {
-  const ProfileView({super.key, required this.usernamePV, required this.dateJoined, required this.rating, required this.ratings});
+  const ProfileView({super.key, required this.usernamePV});
   final String usernamePV;
-  final String dateJoined;
-  final double rating;
-  final int ratings;
+  //final String dateJoined;
+ // final double rating;
+  //final int ratings;
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
@@ -21,6 +21,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
+    getUserInfo(widget.usernamePV);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 175, 202, 250),
       appBar: AppBar(
@@ -115,9 +116,9 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  void getUserInfo(String category) async { 
+  void getUserInfo(String username) async { 
     try { 
-      List<dynamic> fetchedUser = await apiService.fetchUser(widget.usernamePV); 
+      List<dynamic> fetchedUser = await apiService.fetchUser(username); 
       setState(() { 
         user = fetchedUser; 
       }); 
