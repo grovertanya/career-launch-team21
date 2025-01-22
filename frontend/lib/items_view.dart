@@ -17,12 +17,23 @@ class _ItemsViewState extends State<ItemsView> {
 
   @override
   Widget build(BuildContext context) {
+    searchByCategory(widget.category);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.category),
       ),
-      body: Column(
-        
+      body: Expanded( 
+        child: items.isEmpty
+          ? Center(child: Text("No items found")) 
+          : ListView.builder( 
+              itemCount: items.length, 
+              itemBuilder: (context, index) { 
+                return ListTile( 
+                  title: Text(items[index]['name']), 
+                  //subtitle: Text("\$${items[index]['price']} - ${items[index]['category']}"), 
+                ); 
+              }, 
+            ),
       ),
     );
   }
