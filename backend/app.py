@@ -26,9 +26,7 @@ def get_items():
 @app.route('/items/searchCategory', methods=['GET'])
 def searchCategory():
     category = request.args.get('category')
-    min_price = request.args.get('min_price', type=float)
-    max_price = request.args.get('max_price', type=float)
-    filtered_items = search_items(items, category, min_price, max_price)
+    filtered_items = search_items(items, category = category)
     
     result = [{"name": item.name, "price": item.price, "category": item.category} for item in filtered_items]
     return jsonify(result)
@@ -37,7 +35,7 @@ def searchCategory():
 @app.route('/items/searchName', methods=['GET'])
 def searchName():
     name = request.args.get('name')
-    filtered_items = search_items(items, name)
+    filtered_items = search_items(items, name = name)
     
     result = [{"name": item.name, "price": item.price, "category": item.category} for item in filtered_items]
     return jsonify(result)
