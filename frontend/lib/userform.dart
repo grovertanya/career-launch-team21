@@ -17,10 +17,10 @@ class _UserFormState extends State<UserForm> {
   String name = 'default';
 
   @override
-  void dispose() {
-    nameController.dispose();
-    super.dispose();
-  }
+  //void dispose() {
+  //  nameController.dispose();
+  //  super.dispose();
+  //}
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _UserFormState extends State<UserForm> {
             child: ListView(
               children: [
                 TextFormField(
-                  controller: nameController,
+                  //controller: nameController,
                   decoration: InputDecoration(
                     labelText: 'Username',
                     border: OutlineInputBorder(),
@@ -44,6 +44,9 @@ class _UserFormState extends State<UserForm> {
                       return 'Please Enter Your Username';
                     }
                     return null;
+                  },
+                  onSaved: (value){
+                    name = value ?? '';
                   },
                 ),
                 SizedBox(height: 20,),
@@ -67,13 +70,10 @@ class _UserFormState extends State<UserForm> {
                 ElevatedButton(
                   onPressed: () {
                     if(_formKey.currentState!.validate()) {
-                      setState(() {
-                        errorMessage = '';
-                        name = nameController.text;
-                      });
+                      _formKey.currentState!.save();
                       Navigator.pushAndRemoveUntil(
                         context, 
-                        MaterialPageRoute(builder: (context) => HomeScreen()), 
+                        MaterialPageRoute(builder: (context) => HomeScreen(username: name,)), 
                         (route) => false,
                       );
                     }
