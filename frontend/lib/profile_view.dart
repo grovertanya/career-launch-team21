@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/home_screen.dart';
 import 'package:frontend/itemlisting.dart';
 
 class ProfileView extends StatelessWidget {
@@ -23,7 +24,16 @@ class ProfileView extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: GestureDetector(
+            child: Icon(Icons.home),
+            onTap: () {
+              Navigator.pushAndRemoveUntil(
+                context, 
+                MaterialPageRoute(builder: (context) => HomeScreen()), 
+                (route) => false,
+              );
+            },
+          ),
           label: 'Home',
         ),
         BottomNavigationBarItem(

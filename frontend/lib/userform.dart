@@ -72,7 +72,7 @@ class _UserFormState extends State<UserForm> {
                     });
                     Navigator.pushAndRemoveUntil(
                       context, 
-                      MaterialPageRoute(builder: (context) => HomeScreen(username: name,)), 
+                      MaterialPageRoute(builder: (context) => HomeScreen()), 
                       (route) => false,
                     );
                   }

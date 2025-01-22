@@ -38,4 +38,32 @@ class ApiService {
       throw Exception('Error: $e');
     }
   }
+
+  Future<Map<String, dynamic>> addUser({
+    required String name,
+  }) async {
+    final url = Uri.parse('$baseUrl/users');
+
+    // Construct the request body
+    Map<String, dynamic> requestBody = {
+      "name": name,
+      "rating": 0.0,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 201) {
+        return jsonDecode(response.body);  // Successful response
+      } else {
+        throw Exception('Failed to add user: ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
 }

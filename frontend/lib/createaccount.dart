@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/connection.dart';
 import 'package:frontend/userform.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -14,6 +15,7 @@ class _CreateAccountState extends State<CreateAccount> {
   String ? _nameVal;
   String ? _emailVal;
   String ? _passwordVal;
+  final ApiService apiService= ApiService();
 
   @override
   Widget build(BuildContext context) {
@@ -86,9 +88,8 @@ class _CreateAccountState extends State<CreateAccount> {
                 ElevatedButton(
                   onPressed: () {
                     if(_formKey.currentState!.validate()) {
-                      setState(() {
-                        //need to send user info to bakend here
-                      });
+                      _formKey.currentState!.save();
+                      _submitUser(context);
                       Navigator.pushAndRemoveUntil(
                         context, 
                         MaterialPageRoute(builder: (context) => UserForm()), 
@@ -105,5 +106,21 @@ class _CreateAccountState extends State<CreateAccount> {
         ),
       ),
     );
+  }
+
+    void _submitUser(BuildContext context) async {
+    String valueName = _nameVal ?? '';
+    try {
+      final result = await apiService.addUser(
+        name: valueName, 
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Success: ${result["message"]}')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
   }
 }

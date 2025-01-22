@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/profile.dart';
+import 'package:frontend/wishlist.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
-    required this.username,
+    //required this.username,
     });
  
-  final String username;
+  //final String username;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -32,7 +33,16 @@ class _HomeScreenState extends State<HomeScreen> {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.favorite),
+          icon: GestureDetector(
+            child: Icon(Icons.favorite),
+            onTap: () {
+              Navigator.pushAndRemoveUntil(
+                context, 
+                MaterialPageRoute(builder: (context) => WishlistScreen()), 
+                (route) => false,
+              );
+            },
+          ),
           label: 'Wishlist',
         ),
         BottomNavigationBarItem(
