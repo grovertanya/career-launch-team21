@@ -69,7 +69,7 @@ def add_user():
     if 'name' not in data:
         return jsonify({"error": "Missing required field: 'name'"}), 400
     
-    new_user = User(data['name'], rating=data.get('rating', 0.0))
+    new_user = User(data['name'], data['username'], data['password'],rating=data.get('rating', 0.0))
     users.append(new_user)
     
     return jsonify({"message": "User added successfully", "name": new_user.name}), 201
@@ -143,5 +143,9 @@ def rate_user():
 
 if __name__ == '__main__':
     app.run(host = '0.0.0.0', debug=True)
+<<<<<<< Updated upstream
     #app.run(debug=True)
+=======
+
+>>>>>>> Stashed changes
 
