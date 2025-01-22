@@ -21,19 +21,40 @@ class _ItemsViewState extends State<ItemsView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.category),
+        backgroundColor: Colors.blueAccent,
       ),
-      body: Expanded( 
-        child: items.isEmpty
-          ? Center(child: Text("No items found")) 
-          : ListView.builder( 
-              itemCount: items.length, 
-              itemBuilder: (context, index) { 
-                return ListTile( 
-                  title: Text(items[index]['name']), 
-                  //subtitle: Text("\$${items[index]['price']} - ${items[index]['category']}"), 
-                ); 
-              }, 
-            ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Expanded( 
+          child: items.isEmpty
+          
+            ? Center(child: Text("No items found")) 
+            : ListView.builder( 
+                itemCount: items.length, 
+                itemBuilder: (context, index) { 
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(16),
+                        title: Text(items[index]['name']), titleTextStyle: TextStyle(
+                          fontSize: 18, 
+                          fontWeight: FontWeight.bold, 
+                          color: Colors.blueAccent,),
+                          subtitle: Padding(padding: const EdgeInsets.only(top: 8 ),
+                          child: Text("\$${items[index]['price']} - ${items[index]['category']}",
+                          style: TextStyle(fontSize: 14, color: Colors.grey),),),
+                      ),
+                    ),
+                  );
+                
+                }, 
+                
+              ),
+        ),
       ),
     );
   }
