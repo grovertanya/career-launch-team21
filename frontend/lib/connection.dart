@@ -41,12 +41,16 @@ class ApiService {
 
   Future<Map<String, dynamic>> addUser({
     required String name,
+    required String username,
+    required String password,
   }) async {
     final url = Uri.parse('$baseUrl/users');
 
     // Construct the request body
     Map<String, dynamic> requestBody = {
       "name": name,
+      "username": username,
+      "password": password,
       "rating": 0.0,
     };
 
@@ -70,6 +74,18 @@ class ApiService {
   Future<List<dynamic>> fetchItems(String category) 
     async { 
     final response = await http.get(Uri.parse('$baseUrl/items/searchCategory?category=$category')); 
+
+    if (response.statusCode == 200) { 
+      List<dynamic> data = jsonDecode(response.body); 
+      return data; 
+
+    } else { 
+      throw Exception('Failed to load items: ${response.statusCode}'); } 
+    }
+
+  Future<List<dynamic>> fetchUser(String username) 
+    async { 
+    final response = await http.get(Uri.parse('$baseUrl/user?username=$username')); 
 
     if (response.statusCode == 200) { 
       List<dynamic> data = jsonDecode(response.body); 

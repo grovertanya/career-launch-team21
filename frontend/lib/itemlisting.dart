@@ -58,7 +58,7 @@ class _ItemListingState extends State<ItemListing> {
             onTap: () {
               Navigator.pushAndRemoveUntil(
                 context, 
-                MaterialPageRoute(builder: (context) => Profile()), 
+                MaterialPageRoute(builder: (context) => Profile(usernameP: widget.usernameH,)), 
                 (route) => false,
               );
             },
@@ -194,7 +194,7 @@ class _ItemListingState extends State<ItemListing> {
         name: valueName, 
         price: valueNum,
         category: valueCat,
-        sellerName: 'Alice',
+        sellerName: widget.usernameH,
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Success: ${result["message"]}')),

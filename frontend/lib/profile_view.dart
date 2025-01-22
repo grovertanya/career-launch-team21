@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/connection.dart';
 import 'package:frontend/home_screen.dart';
 import 'package:frontend/itemlisting.dart';
 
-class ProfileView extends StatelessWidget {
-  const ProfileView({super.key, required this.username, required this.dateJoined, required this.rating, required this.ratings});
-  final String username;
+class ProfileView extends StatefulWidget {
+  const ProfileView({super.key, required this.usernamePV, required this.dateJoined, required this.rating, required this.ratings});
+  final String usernamePV;
   final String dateJoined;
   final double rating;
   final int ratings;
+
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+
+  ApiService apiService = ApiService();
+  List<dynamic> user = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +40,7 @@ class ProfileView extends StatelessWidget {
             onTap: () {
               Navigator.pushAndRemoveUntil(
                 context, 
-                MaterialPageRoute(builder: (context) => HomeScreen()), 
+                MaterialPageRoute(builder: (context) => HomeScreen(username: widget.usernamePV,)), 
                 (route) => false,
               );
             },
@@ -53,17 +64,18 @@ class ProfileView extends StatelessWidget {
           Icon(Icons.person,
           size: 200,),
           Padding(padding: EdgeInsets.all(20)),
-          buildTextSections('      Username', username),
-          buildTextSections('      Date Joined', dateJoined),
-          buildTextSections('      Rating', rating),
-          buildTextSections('      Ratings', ratings),
+          buildTextSections('      Name', user[0]['name']),
+          buildTextSections('      Username', user[0]['username']),
+          //buildTextSections('      Date Joined', widget.dateJoined),
+          buildTextSections('      Rating', user[0]['rating']),
+          //buildTextSections('      Ratings', user[0]['ratingCount']),
           Padding(padding: EdgeInsets.only(top: 40)),
           SizedBox(
             height: 85,
             width: 300,
             child: ElevatedButton(
               onPressed: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ItemListing(usernameH: username,)));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ItemListing(usernameH: widget.usernamePV,)));
               }, 
               child: Text(
                 'List an Item',
@@ -101,5 +113,16 @@ class ProfileView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void getUserInfo(String category) async { 
+    try { 
+      List<dynamic> fetchedUser = await apiService.fetchUser(widget.usernamePV); 
+      setState(() { 
+        user = fetchedUser; 
+      }); 
+    } catch (e) { 
+        print("Error searching by category: $e"); 
+    } 
   }
 }

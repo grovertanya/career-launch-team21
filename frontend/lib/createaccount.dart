@@ -13,6 +13,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
   final _formKey = GlobalKey<FormState>();
   String ? _nameVal;
+  String ? _userVal;
   String ? _emailVal;
   String ? _passwordVal;
   final ApiService apiService= ApiService();
@@ -30,6 +31,23 @@ class _CreateAccountState extends State<CreateAccount> {
               children: [
                 TextFormField(
                   decoration: InputDecoration(
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.person),
+                  ),
+                  validator: (value) {
+                    if (value==null || value.isEmpty) {
+                      return 'Please Enter a Name';
+                    }
+                    return null;
+                  },
+                  onSaved: (value){
+                    _nameVal = value;
+                  },
+      
+                ),
+                TextFormField(
+                  decoration: InputDecoration(
                     labelText: 'Username',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.person),
@@ -41,7 +59,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     return null;
                   },
                   onSaved: (value){
-                    _nameVal = value;
+                    _userVal = value;
                   },
       
                 ),
@@ -111,9 +129,13 @@ class _CreateAccountState extends State<CreateAccount> {
 
     void _submitUser(BuildContext context) async {
     String valueName = _nameVal ?? '';
+    String valueUser = _userVal ?? '';
+    String valuePassword = _passwordVal ?? '';
     try {
       final result = await apiService.addUser(
         name: valueName, 
+        username: valueUser,
+        password: valuePassword,
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Success: ${result["message"]}')),
