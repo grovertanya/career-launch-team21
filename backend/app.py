@@ -8,7 +8,6 @@ app = Flask(__name__)
 
 # Sample data
 users = [User("Alice", 4.5), User("Bob", 4.7)]
-itemnum = 1
 items = [
     Item("Mini Fridge", 50.0, "Appliances", seller=users[0]),
     Item("Desk Lamp", 20.0, "Furniture", seller=users[1]),
@@ -23,13 +22,22 @@ def get_items():
     items_list = [{"name": item.name, "price": item.price, "category": item.category, "seller": item.seller.name} for item in items]
     return jsonify(items_list)
 
-# search for an item
-@app.route('/items/search', methods=['GET'])
-def search():
+# search for an item by category ( buttons )
+@app.route('/items/searchCategory', methods=['GET'])
+def searchCategory():
     category = request.args.get('category')
     min_price = request.args.get('min_price', type=float)
     max_price = request.args.get('max_price', type=float)
     filtered_items = search_items(items, category, min_price, max_price)
+    
+    result = [{"name": item.name, "price": item.price, "category": item.category} for item in filtered_items]
+    return jsonify(result)
+
+# search for an item by name ( search bar )
+@app.route('/items/searchName', methods=['GET'])
+def searchName():
+    name = request.args.get('name')
+    filtered_items = search_items(items, name)
     
     result = [{"name": item.name, "price": item.price, "category": item.category} for item in filtered_items]
     return jsonify(result)
@@ -43,8 +51,6 @@ def get_users():
 # POST METHODS
 
 # add a user
-
-
 @app.route('/users', methods = ['POST'])
 def add_user():
     data = request.get_json()
@@ -118,5 +124,5 @@ def rate_user():
 
 
 if __name__ == '__main__':
-    app.run(host='192.168.1.164',debug=True)
+    app.run(debug=True)
 
