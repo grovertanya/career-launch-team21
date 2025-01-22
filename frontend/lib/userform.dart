@@ -1,3 +1,4 @@
+import 'package:frontend/createaccount.dart';
 import 'package:frontend/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -33,30 +34,13 @@ class _UserFormState extends State<UserForm> {
               TextFormField(
                 controller: nameController,
                 decoration: InputDecoration(
-                  labelText: 'Name',
+                  labelText: 'Username',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.person),
                 ),
                 validator: (value) {
                   if (value==null || value.isEmpty) {
-                    return 'Please Enter Your Name';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20,),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email),
-                ),
-                validator: (value) {
-                  if (value==null || value.isEmpty) {
-                    return 'Please Enter Your Email';
-                  }
-                  if(!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return 'Please Enter a Valid Email';
+                    return 'Please Enter Your Username';
                   }
                   return null;
                 },
@@ -100,12 +84,21 @@ class _UserFormState extends State<UserForm> {
                 }, 
                 child: const Text('Go'),
               ),
-              Text(
-                'Create Account',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: const Color.fromARGB(255, 14, 30, 56),
-                )
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreateAccount()),
+                    (route) => false,
+                  );
+                },
+                child: Text(
+                  'Create Account',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: const Color.fromARGB(255, 14, 30, 56),
+                  )
+                ),
               )           
       
             ],

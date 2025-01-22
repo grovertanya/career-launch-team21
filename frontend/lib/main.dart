@@ -38,8 +38,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      body: const Center(
-        child: UserForm(),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 300, bottom: 300),
+        child: const Center(
+          child: UserForm(),
+        ),
       ),
     );
   }
