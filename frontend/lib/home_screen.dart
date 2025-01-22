@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/profile.dart';
 import 'package:frontend/wishlist.dart';
+import 'package:frontend/items_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -74,7 +75,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     Padding(padding: const EdgeInsets.all(16)),
                     Column(
                       children: [
-                        buildCategoryDisplay('Clothing', 'assets/images/clothingIcon.png'),
+                        GestureDetector(
+                          child: buildCategoryDisplay('Clothing', 'assets/images/clothingIcon.png'),
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ItemsView(category: 'Clothing')));
+                          }
+                        ),
                         buildCategoryDisplay('Appliances', 'assets/images/appliances.png'),
                       ],
                     ),
