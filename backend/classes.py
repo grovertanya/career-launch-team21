@@ -6,8 +6,10 @@ categories = ["Academic Supplies","Appliances", "Clothing", "Electronics", "Furn
 
 # The user class keeps track of each individual user: Name, Rating, Number of Ratings, Items Listed, Wishlist
 class User:
-    def __init__(self, name, rating =0.0):
+    def __init__(self, name, username, password, rating =0.0):
         self.name = name
+        self.username = username
+        self.password = password
         self.items_listed = []
         self.wishlist = []
         self.rating = rating 

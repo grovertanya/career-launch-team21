@@ -3,11 +3,12 @@
 from flask import Flask, jsonify, request
 from classes import User, Item
 from functions import search_items
+from functions import search_users
 
 app = Flask(__name__)
 
 # Sample data
-users = [User("Alice", 4.5), User("Bob", 4.7)]
+users = [User("Alice","alice123","password", rating = 4.5), User("Bob","bob123","password", rating =  4.7)]
 items = [
     Item("Mini Fridge", 50.0, "Appliances", seller=users[0]),
     Item("Desk Lamp", 20.0, "Furniture", seller=users[1]),
@@ -43,8 +44,20 @@ def searchName():
 # get all users
 @app.route('/users', methods=['GET'])
 def get_users():
-    users_list = [{"name": user.name, "rating": user.rating} for user in users]
+    users_list = [{"username": user.username, "rating": user.rating} for user in users]
     return jsonify(users_list)
+
+
+# get all user by username
+@app.route('/user', methods=['GET'])
+def get_userUsername():
+    username = request.args.get('username')
+    found_user = search_users(users, username)
+
+    if isinstance(found_user, dict):  # Check for error dictionary returned
+        return jsonify(found_user), 404
+
+    return jsonify([{"name": user.name,"username": user.username, "rating": user.rating, "rating count": user.ratingcount} for user in found_user]), 200
 
 # POST METHODS
 
@@ -60,6 +73,13 @@ def add_user():
     users.append(new_user)
     
     return jsonify({"message": "User added successfully", "name": new_user.name}), 201
+
+# # add item to wishlist
+# @app.route('/users/wishlist', methods=['POST'])
+# def add_to_wishlist():
+#     data = request.args.get('')
+
+
 
 # add an item
 # recieves a JSON object with the item's name, price, category, and the seller's name
@@ -122,5 +142,6 @@ def rate_user():
 
 
 if __name__ == '__main__':
-    app.run(host = '192.168.1.164', debug=True)
+    #app.run(host = '192.168.1.164', debug=True)
+    app.run(debug=True)
 
