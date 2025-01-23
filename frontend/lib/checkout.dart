@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:frontend/checkout_success.dart';
 
 class Checkout extends StatefulWidget {
-  const Checkout({super.key, required this.usernameC, required this.sellerName});
+  const Checkout({super.key, required this.usernameC, required this.sellerName, required this.itemID});
 
   final String usernameC;
   final String sellerName;
+  final String itemID;
 
   @override
   State<Checkout> createState() => _CheckoutState();
