@@ -99,12 +99,12 @@ class ApiService {
     required String id,
     required String buyerUsername,
   }) async {
-    final url = Uri.parse('$baseUrl/items/checkout');
+    final url = Uri.parse('$baseUrl/items/checkout?id=$id&username=$buyerUsername');
 
     // Construct the request body
     Map<String, dynamic> requestBody = {
-      "id" : id,
-      "username" : buyerUsername,
+      'id' : id,
+      'username' : buyerUsername,
     };
 
     try {
@@ -117,7 +117,7 @@ class ApiService {
       if (response.statusCode == 200) {
         return jsonDecode(response.body);  // Successful response
       } else {
-        throw Exception('Failed to add item: ${response.body}');
+        throw Exception('Failed to remove item: ${response.body}');
       }
     } catch (e) {
       throw Exception('Error: $e');

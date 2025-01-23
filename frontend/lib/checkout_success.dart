@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/home_screen.dart';
 
-class CheckoutSuccess extends StatelessWidget {
+class CheckoutSuccess extends StatefulWidget {
   const CheckoutSuccess({super.key, required this.usernameCS, required this.sellerNameCS});
 
   final String usernameCS;
   final String sellerNameCS;
+
+  @override
+  State<CheckoutSuccess> createState() => _CheckoutSuccessState();
+
+}
+
+class _CheckoutSuccessState extends State<CheckoutSuccess> {
+
+  bool _showWidget = false;
+
+  final _formKey = GlobalKey<FormState>();
+
+  double ? rating;
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +50,54 @@ class CheckoutSuccess extends StatelessWidget {
             ),
              ElevatedButton(
               onPressed: (){
-                //this is where we would pass the function to rate user
+                setState(() {
+                  _showWidget = true;
+                });
               }, 
               child: Text('Rate seller'),
             ),
             Padding(
               padding: const EdgeInsets.all(16),
             ),
+            if(_showWidget)
+              Form(
+                key: _formKey,
+                child: ListView(
+                  children: [
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Rating',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please Enter a rating';
+                        }
+                        null;
+                      },
+                      onSaved: (value) {
+                        String valueRat = value ?? '';
+                        rating = double.tryParse(valueRat);
+                      }
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        if(_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          //rate a user function
+                        }
+                      }, 
+                      child: const Text('Submit rating'),
+                    ),
+                  ]
+                ),
+              ),
+            Padding(padding: EdgeInsets.all(10)),
             ElevatedButton(
               onPressed: (){
                 Navigator.pushAndRemoveUntil(
                 context, 
-                MaterialPageRoute(builder: (context) => HomeScreen(username: usernameCS,)), 
+                MaterialPageRoute(builder: (context) => HomeScreen(username: widget.usernameCS,)), 
                 (route) => false,
               );
               }, 

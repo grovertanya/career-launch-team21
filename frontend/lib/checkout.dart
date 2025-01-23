@@ -23,7 +23,7 @@ class _CheckoutState extends State<Checkout> {
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         elevation: 0,
-        title: Center(child: Text('Checkoout')),
+        title: Center(child: Text('Checkout')),
       ),
       body: Column(
         children: [
