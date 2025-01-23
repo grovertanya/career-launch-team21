@@ -16,7 +16,7 @@ app = Flask(__name__)
 # get all items
 @app.route('/items', methods=['GET'])
 def get_items():
-    items_list = [{"name": item.name, "price": item.price, "category": item.category, "seller": item.seller.name} for item in items]
+    items_list = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.name} for item in items]
     return jsonify(items_list)
 
 # search for an item by category ( buttons )
@@ -25,7 +25,7 @@ def searchCategory():
     category = request.args.get('category')
     filtered_items = search_items(items, category = category)
     
-    result = [{"name": item.name, "price": item.price, "category": item.category, "seller": item.seller.name} for item in filtered_items]
+    result = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.name} for item in filtered_items]
     return jsonify(result)
 
 # search for an item by name ( search bar )
@@ -34,7 +34,7 @@ def searchName():
     name = request.args.get('name')
     filtered_items = search_items(items, name = name)
     
-    result = [{"name": item.name, "price": item.price, "category": item.category} for item in filtered_items]
+    result = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category} for item in filtered_items]
     return jsonify(result)
 
 # get all users
@@ -76,14 +76,24 @@ def add_user():
 # username, Item ID / Item name
 
 # Checkout function : Mark item as sold 
-# Input: Username, Item iD/ Name 
+# Input: Username, Item ID/ Name 
+
 @app.route('/items/checkout', methods=['POST'])
 def item_checkout():
     itemID = request.args.get('itemID')
-    user = request.args.get('username')
-    search_item_by_id(items, itemID).mark_as_sold()
+    username = request.args.get('username')
 
-    return jsonify({"message": "Item Sold!", "name": user.username}), 201
+    # Ensure inputs are provided
+    if not itemID or not username:
+        return jsonify({"error": "Missing 'itemID' or 'username'"}), 400
+
+    item = search_item_by_id(items, itemID)
+    if not item:
+        return jsonify({"error": "Item not found"}), 404
+
+    item.mark_as_sold()
+
+    return jsonify({"message": f"Item {item.name} marked as sold by {username}"}), 200
 
 
 # remove from wishlist 
