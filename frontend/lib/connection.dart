@@ -94,4 +94,33 @@ class ApiService {
     } else { 
       throw Exception('Failed to load items: ${response.statusCode}'); } 
     }
+
+    Future<Map<String, dynamic>> markItemAsSold({
+    required String id,
+    required String buyerUsername,
+  }) async {
+    final url = Uri.parse('$baseUrl/items/checkout');
+
+    // Construct the request body
+    Map<String, dynamic> requestBody = {
+      "id" : id,
+      "username" : buyerUsername,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);  // Successful response
+      } else {
+        throw Exception('Failed to add item: ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
 }

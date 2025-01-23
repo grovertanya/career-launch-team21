@@ -65,7 +65,8 @@ class _ItemsViewState extends State<ItemsView> {
                           price: items[index]['price'], 
                           itemUsername: items[index]['seller'], 
                           imageUrl: 'sample for now', 
-                          usernameID: widget.usernameIV,
+                          usernameID: widget.usernameIV, 
+                          id: items[index]['id'],
                         )));
                       },
                     ),

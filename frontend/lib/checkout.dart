@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/checkout_success.dart';
+import 'package:frontend/connection.dart';
 
 class Checkout extends StatefulWidget {
   const Checkout({super.key, required this.usernameC, required this.sellerName, required this.itemID});
@@ -13,6 +14,9 @@ class Checkout extends StatefulWidget {
 }
 
 class _CheckoutState extends State<Checkout> {
+
+  ApiService apiService = ApiService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,11 +30,29 @@ class _CheckoutState extends State<Checkout> {
           Text('This is the checkout screen'),
           ElevatedButton(
             onPressed: (){
-              //need to call a function that will remove this item from the database
+              _removeItem(context);
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => CheckoutSuccess(usernameCS: widget.usernameC, sellerNameCS: widget.sellerName,)));
             }, child: Text('Confirm purchase'))
         ],
       )
     );
+  }
+
+  void _removeItem(BuildContext context) async {
+    String idP = widget.itemID;
+    String username = widget.usernameC;
+    try {
+      final result = await apiService.markItemAsSold(
+        id: idP, 
+        buyerUsername: username
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Success: ${result["message"]}')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
   }
 }
