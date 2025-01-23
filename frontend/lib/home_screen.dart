@@ -144,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return GestureDetector(
       child: buildCategoryDisplay(cat, imageUrl),
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ItemsView(category: cat)));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ItemsView(category: cat, usernameIV: widget.username,)));
       }
     );
   }

@@ -24,11 +24,9 @@ class _ItemListingState extends State<ItemListing> {
   double? _inputValue;
   String? _inputValueC;
   String? _inputValueN;
-  TextEditingController nameController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController categoryContrller = TextEditingController();
   File ? _selectedImage;
+
+  //need to create an id variable that we can set equal to the id but not display in each section that can be passed in (this is important for checkout)
 
   @override
   Widget build(BuildContext context) {

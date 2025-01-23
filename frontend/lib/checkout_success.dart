@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:frontend/home_screen.dart';
 
 class CheckoutSuccess extends StatelessWidget {
-  const CheckoutSuccess({super.key, required this.usernameCS});
+  const CheckoutSuccess({super.key, required this.usernameCS, required this.sellerNameCS});
 
   final String usernameCS;
+  final String sellerNameCS;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +31,15 @@ class CheckoutSuccess extends StatelessWidget {
                   )
                 ),
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+            ),
+             ElevatedButton(
+              onPressed: (){
+                //this is where we would pass the function to rate user
+              }, 
+              child: Text('Rate seller'),
             ),
             Padding(
               padding: const EdgeInsets.all(16),
