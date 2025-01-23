@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/connection.dart';
 import 'package:frontend/home_screen.dart';
 
 class CheckoutSuccess extends StatefulWidget {
@@ -15,10 +16,9 @@ class CheckoutSuccess extends StatefulWidget {
 class _CheckoutSuccessState extends State<CheckoutSuccess> {
 
   bool _showWidget = false;
-
   final _formKey = GlobalKey<FormState>();
-
   double ? rating;
+  ApiService apiService = ApiService();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class _CheckoutSuccessState extends State<CheckoutSuccess> {
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         elevation: 0,
-        title: Center(child: Text('Checkoout')),
+        title: Center(child: Text('Checkout')),
       ),
       body: Center(
         child: Column(
@@ -59,10 +59,11 @@ class _CheckoutSuccessState extends State<CheckoutSuccess> {
             Padding(
               padding: const EdgeInsets.all(16),
             ),
-            if(_showWidget)
+            if(_showWidget == true)
               Form(
                 key: _formKey,
                 child: ListView(
+                  shrinkWrap: true,
                   children: [
                     TextFormField(
                       decoration: InputDecoration(
@@ -84,7 +85,7 @@ class _CheckoutSuccessState extends State<CheckoutSuccess> {
                       onPressed: () {
                         if(_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          //rate a user function
+                          _rateUser(context);
                         }
                       }, 
                       child: const Text('Submit rating'),
@@ -107,5 +108,25 @@ class _CheckoutSuccessState extends State<CheckoutSuccess> {
         )
       ),
     );
+  }
+
+  void _rateUser(BuildContext context) async {
+    double ratingVal = rating ?? -1;
+    if(rating!= -1){
+      try {
+        final result = await apiService.rateUser(
+          buyerUsername: widget.usernameCS, 
+          sellerUsername: widget.sellerNameCS, 
+          rating: ratingVal,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Success: ${result["message"]}')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
+    }
   }
 }

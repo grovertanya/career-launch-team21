@@ -123,4 +123,35 @@ class ApiService {
       throw Exception('Error: $e');
     }
   }
+
+  Future<Map<String, dynamic>> rateUser({
+    required String buyerUsername,
+    required String sellerUsername,
+    required double rating,
+  }) async {
+    final url = Uri.parse('$baseUrl/users/rate?rating=$rating&seller_name=$sellerUsername&username=$buyerUsername');
+
+    // Construct the request body
+    Map<String, dynamic> requestBody = {
+      'rating' : rating,
+      'seller_name' : sellerUsername,
+      'username' : buyerUsername,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);  // Successful response
+      } else {
+        throw Exception('Failed to remove item: ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
 }
