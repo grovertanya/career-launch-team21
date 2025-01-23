@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/profile.dart';
+import 'package:frontend/userform.dart';
 import 'package:frontend/wishlist.dart';
 import 'package:frontend/items_view.dart';
 
@@ -27,6 +28,18 @@ class _HomeScreenState extends State<HomeScreen> {
         title: CupertinoSearchTextField(
           backgroundColor: Colors.white,
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.account_circle), // Profile icon
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => UserForm()),
+                (route) => false,
+              );
+            },
+          ),
+        ]
       ),
       bottomNavigationBar: BottomNavigationBar(items: [
         BottomNavigationBarItem(

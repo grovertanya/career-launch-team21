@@ -6,7 +6,7 @@ import 'package:frontend/connection.dart';
 //we need a backend function in this file for retreiving user data based on the username under the item
 
 class ItemDetails extends StatefulWidget {
-  const ItemDetails({super.key, required this.name, required this.description, required this.price, required this.itemUsername, required this.imageUrl, required this.usernameID});
+  const ItemDetails({super.key, required this.name, required this.description, required this.price, required this.itemUsername, required this.imageUrl, required this.usernameID, required this.id});
 
   final String name;
   final String description;
@@ -15,6 +15,7 @@ class ItemDetails extends StatefulWidget {
   //final double userRating;
   final String imageUrl;
   final String usernameID;
+  final String id;
   @override
   State<ItemDetails> createState() => _ItemDetailsState();
 }
@@ -111,7 +112,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                   child: ElevatedButton(
                     onPressed: (){
                       //need to pass in some sort of id
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Checkout(usernameC: widget.usernameID, sellerName: widget.itemUsername,)));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Checkout(usernameC: widget.usernameID, sellerName: widget.itemUsername, itemID: widget.id,)));
                     }, 
                     child: Text(
                       'Checkout',
