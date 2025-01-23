@@ -1,5 +1,4 @@
 import uuid
-from data import items
 
 #classes.py
 
@@ -52,19 +51,20 @@ class Item:
             raise ValueError(f"Invalid category: '{category}'. Valid categories are: {', '.join(categories)}")
         self.name = name  
         #self.description = description
-        self.id = self.generate_unique_id()
+        #self.id = self.generate_unique_id()
+        self.id = str(uuid.uuid4())
         self.sold = False
         self.imageurl = imageurl
         self.price = price  
         self.category = category 
         self.seller = seller
         
-    def generate_unique_id(self):
-        new_id = str(uuid.uuid4())
-        while new_id in Item.used_ids:
-            new_id = str(uuid.uuid4())  # Regenerate until unique
-        Item.used_ids.add(new_id)
-        return new_id
+    # def generate_unique_id(self):
+    #     new_id = str(uuid.uuid4())
+    #     while new_id in Item.used_ids:
+    #         new_id = str(uuid.uuid4())  # Regenerate until unique
+    #     Item.used_ids.add(new_id)
+    #     return new_id
     
     def mark_as_sold(self):
         self.sold = True
@@ -72,3 +72,4 @@ class Item:
     def __str__(self):
         status = "Sold" if self.sold else "Available"
         return f"Item: {self.name}, Price: ${self.price}, Category: {self.category}, Status: {status}, Seller: {self.seller}"
+

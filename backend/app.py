@@ -1,13 +1,20 @@
 #app.py 
 
+
 from flask import Flask, jsonify, request
 from functions import search_items
 from functions import search_users
 from functions import search_item_by_id
-from data import items 
-from data import users
 from classes import Item
 from classes import User
+
+# Sample data
+users = [User("Alice","alice123","password", rating = 4.5), User("Bob","bob123","password", rating =  4.7)]
+items = [
+    Item("Mini Fridge", 50.0, "Appliances", seller=users[0]),
+    Item("Desk Lamp", 20.0, "Furniture", seller=users[1]),
+    Item("Textbook", 30.0, "Academic Supplies", seller=users[0])
+]
 
 app = Flask(__name__)
 
@@ -90,8 +97,8 @@ def item_checkout():
     item = search_item_by_id(items, itemID)
     if not item:
         return jsonify({"error": "Item not found"}), 404
-
-    item.mark_as_sold()
+    
+    items.remove(item)
 
     return jsonify({"message": f"Item {item.name} marked as sold by {username}"}), 200
 
@@ -127,6 +134,7 @@ def add_item():
     return jsonify({
         "message": "Item added successfully",
         "item": {
+            "id": new_item.id,
             "name": new_item.name,
             "price": new_item.price,
             "category": new_item.category,
@@ -162,5 +170,7 @@ def rate_user():
 
 
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', debug=True)
+   #app.run(host = '0.0.0.0', debug=True)
+    app.run(debug=True)
+
 

@@ -1,3 +1,5 @@
+from classes import Item
+
 # functions.py
 
 # Search items by category or name (optional parameters)
@@ -26,4 +28,11 @@ def search_users(users, username):
 
     return results
 
-
+def search_item_by_id(items, item_id):
+    if not item_id:
+        return None  # Return None if no ID is provided
+    
+    for item in items:
+        if str(item.id) == str(item_id):  # Ensure both are compared as strings
+            return item
+    return None  # Return None if not found
