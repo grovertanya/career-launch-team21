@@ -28,11 +28,7 @@ class _ItemListingState extends State<ItemListing> {
   TextEditingController priceController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController categoryContrller = TextEditingController();
-  //String itemName = 'default';
-  //double itemPrice = 0.0;
-  //String itemDescription = 'default';
-  //String itemCategory = 'default';
-  File _selectedImage = File('');
+  File ? _selectedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +85,6 @@ class _ItemListingState extends State<ItemListing> {
               child: ListView(
                 children: [
                   TextFormField(
-                    controller: nameController,
                     decoration: InputDecoration(
                       labelText: 'Item name',
                       border: OutlineInputBorder(),
@@ -106,7 +101,6 @@ class _ItemListingState extends State<ItemListing> {
                     },
                   ),
                   TextFormField(
-                    controller: priceController,
                     decoration: InputDecoration(
                       labelText: 'Item price',
                       border: OutlineInputBorder(),
@@ -126,7 +120,6 @@ class _ItemListingState extends State<ItemListing> {
                     },
                   ),
                   TextFormField(
-                    controller: descriptionController,
                     decoration: InputDecoration(
                       labelText: 'Item description',
                       border: OutlineInputBorder(),
@@ -140,7 +133,6 @@ class _ItemListingState extends State<ItemListing> {
                     }
                   ),
                   TextFormField(
-                    controller: categoryContrller,
                     decoration: InputDecoration(
                       labelText: 'Category',
                       border: OutlineInputBorder(),
@@ -157,7 +149,7 @@ class _ItemListingState extends State<ItemListing> {
                     },
                   ),
                   SizedBox(height: 20,),
-                  Image.file(_selectedImage),
+                  _selectedImage != null ?  Image.file(_selectedImage!) : const Text('Please select an Image'),
                   ElevatedButton(
                       onPressed: () {
                         if(_formKey.currentState!.validate()) {
@@ -195,6 +187,7 @@ class _ItemListingState extends State<ItemListing> {
         price: valueNum,
         category: valueCat,
         sellerName: widget.usernameH,
+        //imageUrl: _selectedImage!.path,
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Success: ${result["message"]}')),

@@ -75,19 +75,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     Padding(padding: const EdgeInsets.all(16)),
                     Column(
                       children: [
-                        GestureDetector(
-                          child: buildCategoryDisplay('Clothing', 'assets/images/clothingIcon.png'),
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ItemsView(category: 'Clothing')));
-                          }
-                        ),
-                        buildCategoryDisplay('Appliances', 'assets/images/appliances.png'),
+                        buildListItems('Clothing', 'assets/images/clothingIcon.png'),
+                        buildListItems('Appliances', 'assets/images/appliances.png'),
                       ],
                     ),
                     Column(
                       children: [
-                        buildCategoryDisplay('Dorm \nEssentials', 'assets/images/dormIcon.png'),
-                        buildCategoryDisplay('Tickets', 'assets/images/ticketIcon.png')
+                        buildListItems('Dorm \nEssentials', 'assets/images/dormIcon.png'),
+                        buildListItems('Tickets', 'assets/images/ticketIcon.png')
                       ],
                     ),
                   ],
@@ -97,14 +92,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     Padding(padding: const EdgeInsets.all(16)),
                     Column(
                       children: [
-                        buildCategoryDisplay('Academic \nSupplies', 'assets/images/school.png'),
-                        buildCategoryDisplay('Electronics', 'assets/images/electronics.png'),
+                        buildListItems('Academic \nSupplies', 'assets/images/school.png'),
+                        buildListItems('Electronics', 'assets/images/electronics.png'),
                       ],
                     ),
                     Column(
                       children: [
-                        buildCategoryDisplay('Furniture', 'assets/images/furniture.png'),
-                        buildCategoryDisplay('More', 'assets/images/more.png')
+                        buildListItems('Furniture', 'assets/images/furniture.png'),
+                        buildListItems('More', 'assets/images/more.png')
                       ],
                     ),
                   ],
@@ -142,6 +137,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildListItems(String cat, String imageUrl) {
+    return GestureDetector(
+      child: buildCategoryDisplay(cat, imageUrl),
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ItemsView(category: cat)));
+      }
     );
   }
 }

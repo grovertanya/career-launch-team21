@@ -18,10 +18,16 @@ class _ProfileViewState extends State<ProfileView> {
 
   ApiService apiService = ApiService();
   List<dynamic> user = [];
-
+  
+  @override
+  void initState() {
+    super.initState();
+     getUserInfo(widget.usernamePV);
+    // Trigger API call only once.
+  }
+   
   @override
   Widget build(BuildContext context) {
-    getUserInfo(widget.usernamePV);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 175, 202, 250),
       appBar: AppBar(
