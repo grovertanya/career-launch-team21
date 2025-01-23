@@ -80,7 +80,7 @@ def add_user():
 
 @app.route('/items/checkout', methods=['POST'])
 def item_checkout():
-    itemID = request.args.get('itemID')
+    itemID = request.args.get('id')
     username = request.args.get('username')
 
     # Ensure inputs are provided
