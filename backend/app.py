@@ -1,19 +1,15 @@
 #app.py 
 
 from flask import Flask, jsonify, request
-from classes import User, Item
 from functions import search_items
 from functions import search_users
+from functions import search_item_by_id
+from data import items 
+from data import users
+from classes import Item
+from classes import User
 
 app = Flask(__name__)
-
-# Sample data
-users = [User("Alice","alice123","password", rating = 4.5), User("Bob","bob123","password", rating =  4.7)]
-items = [
-    Item("Mini Fridge", 50.0, "Appliances", seller=users[0]),
-    Item("Desk Lamp", 20.0, "Furniture", seller=users[1]),
-    Item("Textbook", 30.0, "Academic Supplies", seller=users[0])
-]
 
 # GET METHODS
 
@@ -47,7 +43,6 @@ def get_users():
     users_list = [{"username": user.username, "rating": user.rating} for user in users]
     return jsonify(users_list)
 
-
 # get all user by username
 @app.route('/user', methods=['GET'])
 def get_userUsername():
@@ -74,12 +69,25 @@ def add_user():
     
     return jsonify({"message": "User added successfully", "name": new_user.name}), 201
 
-# # add item to wishlist
+# add item to wishlist
 # @app.route('/users/wishlist', methods=['POST'])
 # def add_to_wishlist():
 #     data = request.args.get('')
+# username, Item ID / Item name
+
+# Checkout function : Mark item as sold 
+# Input: Username, Item iD/ Name 
+@app.route('/items/checkout', methods=['POST'])
+def item_checkout():
+    itemID = request.args.get('itemID')
+    user = request.args.get('username')
+    search_item_by_id(items, itemID).mark_as_sold()
+
+    return jsonify({"message": "Item Sold!", "name": user.username}), 201
 
 
+# remove from wishlist 
+# Input: Item ID, username
 
 # add an item
 # recieves a JSON object with the item's name, price, category, and the seller's name
@@ -119,6 +127,8 @@ def add_item():
 
 # rate a user
 # recieves a JSON object with the seller's name and the rating
+# need : new rating , username of person being rated
+
 @app.route('/users/rate', methods=['POST'])
 def rate_user():
 
