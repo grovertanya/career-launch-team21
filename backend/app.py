@@ -145,28 +145,31 @@ def add_item():
 
 # rate a user
 # recieves a JSON object with the seller's name and the rating
-# need : new rating , username of person being rated
+# need : new rating , username of person rating, username of person being rated
 
 @app.route('/users/rate', methods=['POST'])
 def rate_user():
 
-    data = request.get_json()
+    rating = request.args.get('rating')
+    seller_name = request.args.get('seller_name')
+    username = request.args.get('username')
 
-    if 'seller_name' not in data or 'rating' not in data:
+    if not 'seller_name' or not 'rating':
         return jsonify({"error": "Missing required fields: 'seller_name', 'rating'"}), 400
 
-    seller = next((user for user in users if user.name == data['seller_name']), None)
+    seller = search_users(users, seller_name)[0]
+    user = search_users(users, username)[0]
+
     if not seller:
         return jsonify({"error": "Seller not found"}), 404
 
     # Update the rating (simple averaging approach)
-    seller.rating = (seller.rating + float(data['rating'])) / 2
+    user.rate_another_user(seller, float(rating))
 
     return jsonify({
         "message": f"Rating updated successfully for {seller.name}",
         "new_rating": seller.rating
     }), 200
-
 
 
 if __name__ == '__main__':
