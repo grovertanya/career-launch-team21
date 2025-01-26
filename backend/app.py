@@ -32,7 +32,7 @@ def searchCategory():
     category = request.args.get('category')
     filtered_items = search_items(items, category = category)
     
-    result = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.name} for item in filtered_items]
+    result = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.username} for item in filtered_items]
     return jsonify(result)
 
 # search for an item by name ( search bar )
