@@ -23,7 +23,7 @@ app = Flask(__name__)
 # get all items
 @app.route('/items', methods=['GET'])
 def get_items():
-    items_list = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.name} for item in items]
+    items_list = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.username} for item in items]
     return jsonify(items_list)
 
 # search for an item by category ( buttons )
