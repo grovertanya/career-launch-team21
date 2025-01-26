@@ -23,7 +23,7 @@ app = Flask(__name__)
 # get all items
 @app.route('/items', methods=['GET'])
 def get_items():
-    items_list = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.username} for item in items]
+    items_list = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.username, "description" : item.description, "imageurl": item.imageurl} for item in items]
     return jsonify(items_list)
 
 # search for an item by category ( buttons )
@@ -32,7 +32,7 @@ def searchCategory():
     category = request.args.get('category')
     filtered_items = search_items(items, category = category)
     
-    result = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.username} for item in filtered_items]
+    result = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.username, "description" : item.description, "imageurl": item.imageurl} for item in filtered_items]
     return jsonify(result)
 
 # search for an item by name ( search bar )
@@ -41,7 +41,7 @@ def searchName():
     name = request.args.get('name')
     filtered_items = search_items(items, name = name)
     
-    result = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category} for item in filtered_items]
+    result = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "description" : item.description, "imageurl": item.imageurl} for item in filtered_items]
     return jsonify(result)
 
 # get all users
@@ -112,7 +112,7 @@ def item_checkout():
 def add_item():
     data = request.get_json()
 
-    required_fields = ['name', 'price', 'category', 'seller_name']
+    required_fields = ['name', 'price', 'category', 'seller_name', 'description','imageurl']
     for field in required_fields:
         if field not in data:
             return jsonify({"error": f"Missing field: {field}"}), 400
@@ -127,6 +127,8 @@ def add_item():
         price=float(data['price']),
         category=data['category'],
         seller=seller
+        description=data['description'],
+        imageurl=data['imageurl']
     )
 
     items.append(new_item)

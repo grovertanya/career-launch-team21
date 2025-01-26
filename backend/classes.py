@@ -46,11 +46,11 @@ class Item:
      # Class-level set to track unique IDs
     used_ids = set()
 
-    def __init__(self, name, price, category, imageurl = "https:/url" , sold = False, seller = None):
+    def __init__(self, name, price, category, description = None, imageurl = "https:/url" , sold = False, seller = None):
         if category not in categories:
             raise ValueError(f"Invalid category: '{category}'. Valid categories are: {', '.join(categories)}")
         self.name = name  
-        #self.description = description
+        self.description = description
         self.id = str(uuid.uuid4())
         self.imageurl = imageurl
         self.price = price  
