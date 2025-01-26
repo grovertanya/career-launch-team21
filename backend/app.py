@@ -154,7 +154,7 @@ def rate_user():
     seller_name = request.args.get('seller_name')
     username = request.args.get('username')
 
-    if not 'seller_name' or not 'rating':
+    if not 'seller_name' or not 'rating' or not 'username':
         return jsonify({"error": "Missing required fields: 'seller_name', 'rating'"}), 400
 
     seller = search_users(users, seller_name)[0]
