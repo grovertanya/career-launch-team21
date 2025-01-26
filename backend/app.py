@@ -138,7 +138,7 @@ def add_item():
             "name": new_item.name,
             "price": new_item.price,
             "category": new_item.category,
-            "seller": new_item.seller.name
+            "seller": new_item.seller.username
         }
     }), 201
 
