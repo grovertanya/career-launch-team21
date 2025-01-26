@@ -25,6 +25,7 @@ class _ItemListingState extends State<ItemListing> {
   String? _inputValueC;
   String? _inputValueN;
   File ? _selectedImage;
+  String? imageURL;
 
   //need to create an id variable that we can set equal to the id but not display in each section that can be passed in (this is important for checkout)
 
@@ -65,8 +66,9 @@ class _ItemListingState extends State<ItemListing> {
       body: Column(
         children: [
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               _pickImageFromGallery();
+              imageURL = await apiService.uploadImageToBackend(_selectedImage!);
             }, 
             child: const Text(
               'Pick Image from Gallery',
@@ -170,6 +172,7 @@ class _ItemListingState extends State<ItemListing> {
   Future _pickImageFromGallery() async {
     final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
 
+
     setState(() {
       _selectedImage = File(returnedImage!.path);
     });
@@ -179,13 +182,14 @@ class _ItemListingState extends State<ItemListing> {
     double valueNum = _inputValue ?? 0.0;
     String valueCat = _inputValueC ?? '';
     String valueName = _inputValueN ?? '';
+    String url = imageURL ?? '';
     try {
       final result = await apiService.addItem(
         name: valueName, 
         price: valueNum,
         category: valueCat,
         sellerName: widget.usernameH,
-        //imageUrl: _selectedImage!.path,
+        imageUrl: url,
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Success: ${result["message"]}')),
