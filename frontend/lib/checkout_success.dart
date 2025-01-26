@@ -30,18 +30,26 @@ class _CheckoutSuccessState extends State<CheckoutSuccess> {
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              color: const Color.fromARGB(255, 173, 255, 175),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
               child: SizedBox(
-                width: 100,
-                height: 20,
-                child: Text(
-                  'Success',
-                  style: TextStyle(
-                    color: const Color.fromARGB(255, 34, 67, 35),
-                    fontWeight: FontWeight.bold,
-                  )
+                width: 200,
+                height: 100,
+                child: Container(
+                  color: const Color.fromARGB(255, 173, 255, 175),
+                  child: Center(
+                    child: Text(
+                      'Success',
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 34, 67, 35),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      )
+                    ),
+                  ),
                 ),
               ),
             ),

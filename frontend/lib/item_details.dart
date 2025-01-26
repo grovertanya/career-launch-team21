@@ -112,7 +112,18 @@ class _ItemDetailsState extends State<ItemDetails> {
                   child: ElevatedButton(
                     onPressed: (){
                       //need to pass in some sort of id
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => Checkout(usernameC: widget.usernameID, sellerName: widget.itemUsername, itemID: widget.id,)));
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => Checkout(
+                            usernameC: widget.usernameID, 
+                            sellerName: widget.itemUsername, 
+                            itemID: widget.id, 
+                            itemName: widget.name, 
+                            description: widget.description, 
+                            price: widget.price,
+                            )
+                        ),
+                      );
                     }, 
                     child: Text(
                       'Checkout',

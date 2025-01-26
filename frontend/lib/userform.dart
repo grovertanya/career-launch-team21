@@ -17,23 +17,21 @@ class _UserFormState extends State<UserForm> {
   String name = 'default';
 
   @override
-  //void dispose() {
-  //  nameController.dispose();
-  //  super.dispose();
-  //}
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(16),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            top: 16,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+          ),
           child: Form(
             key: _formKey,
-            child: ListView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 TextFormField(
-                  //controller: nameController,
                   decoration: InputDecoration(
                     labelText: 'Username',
                     border: OutlineInputBorder(),
@@ -95,13 +93,12 @@ class _UserFormState extends State<UserForm> {
                   },
                   child: Text(
                     'Create Account',
-                    style: TextStyle(
+                  style: TextStyle(
                       fontSize: 12,
                       color: const Color.fromARGB(255, 14, 30, 56),
                     )
                   ),
                 )           
-        
               ],
             ),
           ),
