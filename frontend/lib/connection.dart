@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class ApiService {
@@ -10,7 +11,9 @@ class ApiService {
     required String name,
     required double price,
     required String category,
+    required String description,
     required String sellerName,
+    required String imageUrl,
   }) async {
     final url = Uri.parse('$baseUrl/items');
 
@@ -20,6 +23,8 @@ class ApiService {
       "price": price,
       "category": category,
       "seller_name": sellerName,
+      "description" : description,
+      "imageurl" : imageUrl,
     };
 
     try {
@@ -154,4 +159,21 @@ class ApiService {
       throw Exception('Error: $e');
     }
   }
+
+  Future<String?> uploadImageToBackend(File imageFile) async {
+  final uri = Uri.parse("http://10.174.129.101:5000/upload");
+  final request = http.MultipartRequest("POST", uri);
+
+  request.files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+
+  final response = await request.send();
+  if (response.statusCode == 200) {
+    final responseBody = await response.stream.bytesToString();
+    // Parse the URL from the response (assuming plain URL is returned)
+    return responseBody;
+  } else {
+    print("Upload failed: ${response.statusCode}");
+    return null;
+  }
+}
 }

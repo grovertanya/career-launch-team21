@@ -47,15 +47,27 @@ class _ItemsViewState extends State<ItemsView> {
                         elevation: 5,
                         shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.all(16),
-                          title: Text(items[index]['name']), titleTextStyle: TextStyle(
-                            fontSize: 18, 
-                            fontWeight: FontWeight.bold, 
-                            color: Colors.blueAccent,),
-                            subtitle: Padding(padding: const EdgeInsets.only(top: 8 ),
-                            child: Text("\$${items[index]['price']} - ${items[index]['category']}",
-                            style: TextStyle(fontSize: 14, color: Colors.grey),),),
+                        child: Row(
+                          children: [
+                            ListTile(
+                              contentPadding: const EdgeInsets.all(16),
+                              title: Text(items[index]['name']), titleTextStyle: 
+                                TextStyle(
+                                  fontSize: 18, 
+                                  fontWeight: FontWeight.bold, 
+                                  color: const Color.fromARGB(255, 25, 25, 26),
+                                ),
+                              subtitle: Padding(
+                                padding: const EdgeInsets.only(top: 8 ),
+                                child: Text(
+                                  "\$${items[index]['price']} - ${items[index]['category']}",
+                                  style: TextStyle(
+                                    fontSize: 14, 
+                                    color: Colors.grey),
+                                  ),
+                                ),
+                          ),
+                          ]
                         ),
                       ),
                       onTap: () {

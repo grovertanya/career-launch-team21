@@ -126,7 +126,7 @@ def add_item():
         name=data['name'],
         price=float(data['price']),
         category=data['category'],
-        seller=seller
+        seller=seller,
         description=data['description'],
         imageurl=data['imageurl']
     )

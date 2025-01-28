@@ -24,6 +24,7 @@ class _ItemListingState extends State<ItemListing> {
   double? _inputValue;
   String? _inputValueC;
   String? _inputValueN;
+  String? _inputValueD;
   File ? _selectedImage;
   String? imageURL;
 
@@ -130,7 +131,10 @@ class _ItemListingState extends State<ItemListing> {
                         return 'Incomplete';
                       }
                       return null;
-                    }
+                    },
+                    onSaved: (value) {
+                      _inputValueD = value;
+                    },
                   ),
                   TextFormField(
                     decoration: InputDecoration(
@@ -182,12 +186,14 @@ class _ItemListingState extends State<ItemListing> {
     double valueNum = _inputValue ?? 0.0;
     String valueCat = _inputValueC ?? '';
     String valueName = _inputValueN ?? '';
+    String valueDescription = _inputValueD ?? '';
     String url = imageURL ?? '';
     try {
       final result = await apiService.addItem(
         name: valueName, 
         price: valueNum,
         category: valueCat,
+        description: valueDescription,
         sellerName: widget.usernameH,
         imageUrl: url,
       );
