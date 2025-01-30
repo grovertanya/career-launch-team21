@@ -164,7 +164,7 @@ class ApiService {
   final uri = Uri.parse("http://10.174.129.101:5000/upload");
   final request = http.MultipartRequest("POST", uri);
 
-  request.files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+  request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
   //we may have to add some sort of image key in the map
   final response = await request.send();
   if (response.statusCode == 200) {
