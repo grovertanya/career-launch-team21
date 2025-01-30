@@ -32,6 +32,7 @@ def search_item_by_id(items, item_id):
     if not item_id:
         return None  # Return None if no ID is provided
     
+    # returns item object
     for item in items:
         if str(item.id) == str(item_id):  # Ensure both are compared as strings
             return item
