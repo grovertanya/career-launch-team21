@@ -49,24 +49,35 @@ class _ItemsViewState extends State<ItemsView> {
                         borderRadius: BorderRadius.circular(10)),
                         child: Row(
                           children: [
-                            ListTile(
-                              contentPadding: const EdgeInsets.all(16),
-                              title: Text(items[index]['name']), titleTextStyle: 
-                                TextStyle(
-                                  fontSize: 18, 
-                                  fontWeight: FontWeight.bold, 
-                                  color: const Color.fromARGB(255, 25, 25, 26),
-                                ),
-                              subtitle: Padding(
-                                padding: const EdgeInsets.only(top: 8 ),
-                                child: Text(
-                                  "\$${items[index]['price']} - ${items[index]['category']}",
-                                  style: TextStyle(
-                                    fontSize: 14, 
-                                    color: Colors.grey),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(30),
+                              child: Image.network(
+                                items[index]['imageurl'],
+                                width: 10,
+                                height: 10,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Expanded(
+                              child: ListTile(
+                                contentPadding: const EdgeInsets.all(16),
+                                title: Text(items[index]['name']), titleTextStyle: 
+                                  TextStyle(
+                                    fontSize: 18, 
+                                    fontWeight: FontWeight.bold, 
+                                    color: const Color.fromARGB(255, 25, 25, 26),
                                   ),
-                                ),
-                          ),
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.only(top: 8 ),
+                                  child: Text(
+                                    "\$${items[index]['price']} - ${items[index]['category']}",
+                                    style: TextStyle(
+                                      fontSize: 14, 
+                                      color: Colors.grey),
+                                    ),
+                                  ),
+                                                        ),
+                            ),
                           ]
                         ),
                       ),
@@ -76,7 +87,7 @@ class _ItemsViewState extends State<ItemsView> {
                           description: 'sample for now', 
                           price: items[index]['price'], 
                           itemUsername: items[index]['seller'], 
-                          imageUrl: 'sample for now', 
+                          imageUrl: items[index]['imageurl'],
                           usernameID: widget.usernameIV, 
                           id: items[index]['id'],
                         )));

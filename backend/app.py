@@ -1,5 +1,8 @@
 #app.py 
 
+import os
+from werkzeug.utils import secure_filename
+
 
 from flask import Flask, jsonify, request
 from functions import search_items
@@ -140,7 +143,8 @@ def add_item():
             "name": new_item.name,
             "price": new_item.price,
             "category": new_item.category,
-            "seller": new_item.seller.username
+            "seller": new_item.seller.username,
+            "imageurl": new_item.imageurl
         }
     }), 201
 
@@ -184,6 +188,30 @@ def rate_user():
         "message": f"Rating updated successfully for {seller.name}",
         "new_rating": seller.rating
     }), 200
+
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# sending the IMAGE URL
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'image' not in request.files:
+        return jsonify({"error": "No image file found"}), 400
+
+    image = request.files['image']
+
+    if image.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    filename = secure_filename(image.filename)
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    image.save(file_path)
+
+    # Generate the URL (Modify based on your hosting setup)
+    file_url = f"http://10.174.129.101:5000/uploads/{filename}"
+
+    return jsonify({"image_url": file_url}), 200
 
 if __name__ == '__main__':
     app.run(host = '0.0.0.0', debug=True)

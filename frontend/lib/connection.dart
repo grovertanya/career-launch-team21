@@ -165,15 +165,54 @@ class ApiService {
   final request = http.MultipartRequest("POST", uri);
 
   request.files.add(await http.MultipartFile.fromPath('file', imageFile.path));
-
+  //we may have to add some sort of image key in the map
   final response = await request.send();
   if (response.statusCode == 200) {
     final responseBody = await response.stream.bytesToString();
     // Parse the URL from the response (assuming plain URL is returned)
+    print("Response from backend: $responseBody");
     return responseBody;
   } else {
     print("Upload failed: ${response.statusCode}");
     return null;
   }
 }
+
+Future<Map<String, dynamic>> addToWishlist({
+  //should probably only pass in the body
+    required String name,
+    required double price,
+    required String category,
+    required String description,
+    required String sellerName,
+    required String imageUrl,
+  }) async {
+    final url = Uri.parse('$baseUrl/users/'); //need to know the specific url to add to wishlist
+
+    // Construct the request body
+    Map<String, dynamic> requestBody = {
+      "name": name,
+      "price": price,
+      "category": category,
+      "seller_name": sellerName,
+      "description" : description,
+      "imageurl" : imageUrl,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 201) {
+        return jsonDecode(response.body);  // Successful response
+      } else {
+        throw Exception('Failed to add item: ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
 }

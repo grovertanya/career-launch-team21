@@ -46,7 +46,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                     bottomLeft: Radius.circular(30),
                     bottomRight: Radius.circular(30),
                   ),
-                  child: Image.asset('assets/images/placeholder.webp'), //replace with imageUrl once its integrated through backend 
+                  child: Image.network(widget.imageUrl), //replace with imageUrl once its integrated through backend 
                 ),
               ),
               //wrap in padding
@@ -83,7 +83,7 @@ class _ItemDetailsState extends State<ItemDetails> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20,20,20,0),
                 child: Text(
-                  'Sold by: ${widget.itemUsername}, 4.5', //this is where we would put the rating
+                  'Sold by: ${widget.itemUsername}, ${user[0]['rating']}', //this is where we would put the rating
                   style: TextStyle(
                     fontSize: 20,
                     color: const Color.fromARGB(255, 119, 119, 119),
@@ -97,6 +97,21 @@ class _ItemDetailsState extends State<ItemDetails> {
                     onPressed: (){},
                     child: Text(
                       'Contact User',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: const Color.fromARGB(255, 33, 66, 123),
+                      )
+                    ),
+                  )
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20,20,0,20),
+                child: SizedBox(
+                  child: ElevatedButton(
+                    onPressed: (){},
+                    child: Text(
+                      'Add to Wishlist',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: const Color.fromARGB(255, 33, 66, 123),
@@ -153,4 +168,5 @@ class _ItemDetailsState extends State<ItemDetails> {
         print("Error searching by category: $e"); 
     } 
   }
+
 }

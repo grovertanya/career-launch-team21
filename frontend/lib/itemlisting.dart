@@ -27,6 +27,7 @@ class _ItemListingState extends State<ItemListing> {
   String? _inputValueD;
   File ? _selectedImage;
   String? imageURL;
+  bool _showWidget = false;
 
   //need to create an id variable that we can set equal to the id but not display in each section that can be passed in (this is important for checkout)
 
@@ -70,6 +71,7 @@ class _ItemListingState extends State<ItemListing> {
             onPressed: () async {
               _pickImageFromGallery();
               imageURL = await apiService.uploadImageToBackend(_selectedImage!);
+              _showWidget = true;
             }, 
             child: const Text(
               'Pick Image from Gallery',
@@ -153,7 +155,10 @@ class _ItemListingState extends State<ItemListing> {
                     },
                   ),
                   SizedBox(height: 20,),
-                  _selectedImage != null ?  Image.file(_selectedImage!) : const Text('Please select an Image'),
+                  //_selectedImage != null ?  Image.file(_selectedImage!) : const Text('Please select an Image'),
+                  if (_showWidget == true) 
+                    Text(imageURL!),
+                  
                   ElevatedButton(
                       onPressed: () {
                         if(_formKey.currentState!.validate()) {
@@ -187,7 +192,7 @@ class _ItemListingState extends State<ItemListing> {
     String valueCat = _inputValueC ?? '';
     String valueName = _inputValueN ?? '';
     String valueDescription = _inputValueD ?? '';
-    String url = imageURL ?? '';
+    String url = imageURL ?? 'error';
     try {
       final result = await apiService.addItem(
         name: valueName, 
