@@ -228,7 +228,7 @@ def upload_file():
     # ** change IP address
     file_url = f"http://10.174.129.101:5000/uploads/{filename}"
 
-    return file_url, 200
+    return jsonify({"image_url": file_url}), 200
 
 if __name__ == '__main__':
     app.run(host = '0.0.0.0', debug=True)
