@@ -49,13 +49,15 @@ class _ItemsViewState extends State<ItemsView> {
                         borderRadius: BorderRadius.circular(10)),
                         child: Row(
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(30),
-                              child: Image.network(
-                                items[index]['imageurl'],
-                                width: 10,
-                                height: 10,
-                                fit: BoxFit.cover,
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(30),
+                                child: Text(
+                                  items[index]['imageurl']!,
+                                  //width: 10,
+                                  //height: 10,
+                                  //fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                             Expanded(
