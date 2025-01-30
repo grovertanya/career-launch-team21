@@ -80,14 +80,30 @@ def add_user():
     return jsonify({"message": "User added successfully", "name": new_user.name}), 201
 
 # add item to wishlist
-# @app.route('/users/wishlist', methods=['POST'])
-# def add_to_wishlist():
-#     data = request.args.get('')
-# username, Item ID / Item name
+# Input: Username, Item ID / Item name
+@app.route('/users/wishlist', methods=['POST'])
+def add_to_wishlist():
+    username = request.args.get('username')
+    itemID = request.args.get('id')
+
+     # Ensure inputs are provided
+    if not itemID or not username:
+        return jsonify({"error": "Missing 'itemID' or 'username'"}), 400
+
+    item =  search_item_by_id(items, itemID)
+    if not item:
+         return jsonify({"error": "Item not found"}), 404
+    
+    user = search_users(users, username)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    
+    user[0].add_to_wishlist(item)
+
+
 
 # Checkout function : Mark item as sold 
-# Input: Username, Item ID/ Name 
-
+# Input: Username, Item ID/ Name    
 @app.route('/items/checkout', methods=['POST'])
 def item_checkout():
     itemID = request.args.get('id')
@@ -209,12 +225,13 @@ def upload_file():
     image.save(file_path)
 
     # Generate the URL (Modify based on your hosting setup)
+    # ** change IP address
     file_url = f"http://10.174.129.101:5000/uploads/{filename}"
 
-    return jsonify({"image_url": file_url}), 200
+    return file_url, 200
 
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', debug=True)
-    #app.run(debug=True)
+    # app.run(host = '0.0.0.0', debug=True)
+    app.run(debug=True)
 
 
