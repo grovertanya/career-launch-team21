@@ -193,7 +193,7 @@ Future<Map<String, dynamic>> addToWishlist({
     required String user,
     required String id,
   }) async {
-    final url = Uri.parse('$baseUrl/users/wishlist/add'); //need to know the specific url to add to wishlist
+    final url = Uri.parse('$baseUrl/users/wishlist/add?username=$user&id=$id'); //need to know the specific url to add to wishlist
 
     // Construct the request body
     Map<String, dynamic> requestBody = {
@@ -208,8 +208,9 @@ Future<Map<String, dynamic>> addToWishlist({
         body: jsonEncode(requestBody),
       );
 
-      if (response.statusCode == 201) {
-        return jsonDecode(response.body);  // Successful response
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        return responseData;
       } else {
         throw Exception('Failed to add item: ${response.body}');
       }
@@ -219,7 +220,7 @@ Future<Map<String, dynamic>> addToWishlist({
   }
 
 Future<List<String>> getWishlist(String username) async {
-  final Uri url = Uri.parse('$baseUrl/getWishlist?username=$username');
+  final Uri url = Uri.parse('$baseUrl/users/wishlist?username=$username');
 
   final response = await http.get(url);
 

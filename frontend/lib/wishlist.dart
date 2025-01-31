@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/connection.dart';
+import 'package:frontend/home_screen.dart';
+import 'package:frontend/profile.dart';
+import 'package:frontend/userform.dart';
 
 class WishlistScreen extends StatefulWidget {
   const WishlistScreen({super.key, required this.username});
@@ -29,7 +33,67 @@ class _WishlistScreenState extends State<WishlistScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Wishlist')),
+      backgroundColor: Color.fromARGB(255, 175, 202, 250),
+      appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
+        elevation: 0,
+        title: Center(child: Text('Wishlist')),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.account_circle), // Profile icon
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => UserForm()),
+                (route) => false,
+              );
+            },
+          ),
+        ]
+      ),
+      bottomNavigationBar: BottomNavigationBar(items: [
+        BottomNavigationBarItem(
+          icon: GestureDetector(
+            child: Icon(Icons.home),
+            onTap: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen(username: widget.username,)),
+                (route) => false,
+              );
+            }
+          ),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: GestureDetector(
+            child: Icon(Icons.favorite),
+            onTap: () {
+              Navigator.pushAndRemoveUntil(
+                context, 
+                MaterialPageRoute(builder: (context) => WishlistScreen(username: widget.username,)), 
+                (route) => false,
+              );
+            },
+          ),
+          label: 'Wishlist',
+        ),
+        BottomNavigationBarItem(
+          icon: GestureDetector(
+            child: Icon(Icons.person),
+            onTap: () {
+              Navigator.pushAndRemoveUntil(
+                context, 
+                MaterialPageRoute(builder: (context) => Profile(usernameP: widget.username,)), 
+                (route) => false,
+              );
+            },
+          ),
+          label: 'Profile',
+        ),
+      ],
+      backgroundColor: Colors.blueAccent,
+      ),
       body: ListView.builder(
         itemCount: items.length,
         itemBuilder: (context, index) {
