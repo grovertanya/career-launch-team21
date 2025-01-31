@@ -109,7 +109,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                 padding: const EdgeInsets.fromLTRB(10,10,0,10),
                 child: SizedBox(
                   child: ElevatedButton(
-                    onPressed: (){},
+                    onPressed: (){
+                      addToWishlist(context);
+                    },
                     child: Text(
                       'Add to Wishlist',
                       style: TextStyle(
@@ -169,7 +171,7 @@ class _ItemDetailsState extends State<ItemDetails> {
     } 
   }
 
-    void addToWidhlist(BuildContext context) async {
+    void addToWishlist(BuildContext context) async {
     try {
       final result = await apiService.addToWishlist(
         user: widget.usernameID,

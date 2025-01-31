@@ -19,6 +19,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
   @override
   void initState() {
     super.initState();
+    getWishlist(widget.username);
     // Add items to current user's wishlist
     //exampleItems.forEach(currentUser.addToWishlist);
   }
@@ -49,17 +50,16 @@ class _WishlistScreenState extends State<WishlistScreen> {
     );
   }
 
-    void getWshlist(String user) async { 
+    void getWishlist(String user) async { 
     setState(() {
       isLoading = true; // ✅ Show loading spinner
     });
 
     try { 
       await Future.delayed(Duration(seconds: 2)); // Simulate API delay
-      //List<dynamic> fetchedItems = await apiService.addToWishlist(category); - need a get function here
-      
+      List<dynamic> fetchedItems = await apiService.getWishlist(widget.username); 
       setState(() { 
-       // items = fetchedItems;
+        items = fetchedItems;
         isLoading = false; // ✅ Hide loading spinner after data is ready
       });
 

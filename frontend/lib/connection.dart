@@ -193,12 +193,12 @@ Future<Map<String, dynamic>> addToWishlist({
     required String user,
     required String id,
   }) async {
-    final url = Uri.parse('$baseUrl/users/wishlist'); //need to know the specific url to add to wishlist
+    final url = Uri.parse('$baseUrl/users/wishlist/add'); //need to know the specific url to add to wishlist
 
     // Construct the request body
     Map<String, dynamic> requestBody = {
       "username": user,
-      "itemID": id,
+      "id": id,
     };
 
     try {
@@ -217,4 +217,22 @@ Future<Map<String, dynamic>> addToWishlist({
       throw Exception('Error: $e');
     }
   }
+
+Future<List<String>> getWishlist(String username) async {
+  final Uri url = Uri.parse('$baseUrl/getWishlist?username=$username');
+
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> data = json.decode(response.body);
+    if (data.containsKey('wishlist')) {
+      return List<String>.from(data['wishlist']);
+    } else {
+      return [];
+    }
+  } else {
+    throw Exception('Failed to fetch wishlist: ${response.body}');
+  }
+}
+  
 }

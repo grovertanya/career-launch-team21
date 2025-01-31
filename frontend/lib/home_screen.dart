@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               Navigator.pushAndRemoveUntil(
                 context, 
-                MaterialPageRoute(builder: (context) => WishlistScreen()), 
+                MaterialPageRoute(builder: (context) => WishlistScreen(username: widget.username,)), 
                 (route) => false,
               );
             },
