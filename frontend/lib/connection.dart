@@ -13,7 +13,7 @@ class ApiService {
     required String category,
     required String description,
     required String sellerName,
-    required String imageUrl,
+   // required String imageUrl,
   }) async {
     final url = Uri.parse('$baseUrl/items');
 
@@ -24,7 +24,7 @@ class ApiService {
       "category": category,
       "seller_name": sellerName,
       "description" : description,
-      "imageurl" : imageUrl,
+     // "imageurl" : imageUrl,
     };
 
     try {
@@ -160,43 +160,45 @@ class ApiService {
     }
   }
 
-  Future<String?> uploadImageToBackend(File imageFile) async {
-  final uri = Uri.parse("http://10.174.129.101:5000/upload");
-  final request = http.MultipartRequest("POST", uri);
+// Future<Map<String, dynamic>?> uploadImageToBackend(File imageFile) async {
+//   try {
+//     final uri = Uri.parse("http://10.174.129.101:5000/upload");
+//     final request = http.MultipartRequest("POST", uri);
 
-  request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
-  //we may have to add some sort of image key in the map
-  final response = await request.send();
-  if (response.statusCode == 200) {
-    final responseBody = await response.stream.bytesToString();
-    // Parse the URL from the response (assuming plain URL is returned)
-    print("Response from backend: $responseBody");
-    return responseBody;
-  } else {
-    print("Upload failed: ${response.statusCode}");
-    return null;
-  }
-}
+//     // Ensure field name is 'image' to match Flask
+//     request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+
+//     final response = await request.send();
+//     final responseNew = await http.Response.fromStream(response);
+
+//     print("Response Code: ${response.statusCode}");
+//     print("Response Body: ${responseNew.body}");
+
+//     if (response.statusCode == 200) {
+//       final data = jsonDecode(responseNew.body);
+//       print("Parsed JSON: $data");  
+//       return data;
+//     } else {
+//       print("Error: ${responseNew.body}");
+//       return {"error": "HTTP ${response.statusCode}", "body": responseNew.body};
+//     }
+//   } catch (e) {
+//     print("Upload Error: $e");
+//     return {"error": "Upload failed", "exception": e.toString()};
+//   }
+// }
 
 Future<Map<String, dynamic>> addToWishlist({
   //should probably only pass in the body
-    required String name,
-    required double price,
-    required String category,
-    required String description,
-    required String sellerName,
-    required String imageUrl,
+    required String user,
+    required String id,
   }) async {
-    final url = Uri.parse('$baseUrl/users/'); //need to know the specific url to add to wishlist
+    final url = Uri.parse('$baseUrl/users/wishlist'); //need to know the specific url to add to wishlist
 
     // Construct the request body
     Map<String, dynamic> requestBody = {
-      "name": name,
-      "price": price,
-      "category": category,
-      "seller_name": sellerName,
-      "description" : description,
-      "imageurl" : imageUrl,
+      "username": user,
+      "itemID": id,
     };
 
     try {

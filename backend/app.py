@@ -26,7 +26,7 @@ app = Flask(__name__)
 # get all items
 @app.route('/items', methods=['GET'])
 def get_items():
-    items_list = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.username, "description" : item.description, "imageurl": item.imageurl} for item in items]
+    items_list = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.username, "description" : item.description} for item in items]
     return jsonify(items_list)
 
 # get all items from users wishlist
@@ -71,7 +71,7 @@ def searchCategory():
     category = request.args.get('category')
     filtered_items = search_items(items, category = category)
     
-    result = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.username, "description" : item.description, "imageurl": item.imageurl} for item in filtered_items]
+    result = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.username, "description" : item.description} for item in filtered_items]
     return jsonify(result)
 
 # search for an item by name ( search bar )
@@ -80,7 +80,7 @@ def searchName():
     name = request.args.get('name')
     filtered_items = search_items(items, name = name)
     
-    result = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "description" : item.description, "imageurl": item.imageurl} for item in filtered_items]
+    result = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "description" : item.description} for item in filtered_items]
     return jsonify(result)
 
 # get all users
@@ -214,7 +214,7 @@ def item_checkout():
 def add_item():
     data = request.get_json()
 
-    required_fields = ['name', 'price', 'category', 'seller_name', 'description','imageurl']
+    required_fields = ['name', 'price', 'category', 'seller_name', 'description']
     for field in required_fields:
         if field not in data:
             return jsonify({"error": f"Missing field: {field}"}), 400
@@ -230,7 +230,7 @@ def add_item():
         category=data['category'],
         seller=seller,
         description=data['description'],
-        imageurl=data['imageurl']
+        #imageurl=data['imageurl']
     )
 
     items.append(new_item)
@@ -243,7 +243,7 @@ def add_item():
             "price": new_item.price,
             "category": new_item.category,
             "seller": new_item.seller.username,
-            "imageurl": new_item.imageurl
+            #"imageurl": new_item.imageurl
         }
     }), 201
 
@@ -287,6 +287,31 @@ def rate_user():
         "message": f"Rating updated successfully for {seller.name}",
         "new_rating": seller.rating
     }), 200
+
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# sending the IMAGE URL
+#@app.route('/upload', methods=['POST'])
+#def upload_file():
+#    if 'image' not in request.files:
+#        return jsonify({"error": "No image file found"}), 400
+#
+#    image = request.files['image']
+#
+#   if image.filename == '':
+#       return jsonify({"error": "No selected file"}), 400
+#
+#   filename = secure_filename(image.filename)
+#   file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+#   image.save(file_path)
+#
+    # Generate the URL (Modify based on your hosting setup)
+    # ** change IP address
+#   file_url = f"http://10.174.129.101:5000/uploads/{filename}"
+#
+#   return jsonify({"image_url": file_url}), 200, {'Content-Type': 'application/json'}
 
 if __name__ == '__main__':
     #app.run(host = '0.0.0.0', debug=True)
