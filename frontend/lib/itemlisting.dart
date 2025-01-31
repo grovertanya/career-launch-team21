@@ -27,8 +27,8 @@ class _ItemListingState extends State<ItemListing> {
   String? _inputValueD;
   File ? _selectedImage;
   String? imageURL;
-  bool _showWidget = false;
-  Map<String,dynamic> urlMap = {};
+  //bool _showWidget = false;
+  //Map<String,dynamic> urlMap = {};
 
   //need to create an id variable that we can set equal to the id but not display in each section that can be passed in (this is important for checkout)
 
@@ -76,8 +76,8 @@ class _ItemListingState extends State<ItemListing> {
               // }else{
               //   getUrl();
               // }
-              imageURL = urlMap['image_url'];
-              _showWidget = true;
+              //imageURL = urlMap['image_url'];
+              //_showWidget = true;
             }, 
             child: const Text(
               'Pick Image from Gallery',
@@ -166,9 +166,18 @@ class _ItemListingState extends State<ItemListing> {
                     //Text(imageURL!),
                   
                   ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if(_formKey.currentState!.validate()) {
                           //need to send all data to backend in an item object
+                          //if (_selectedImage != null) {
+                          //   await getUrl(); // ✅ Wait for image upload before submitting
+                          // }
+                          // if (imageURL == null || imageURL == 'error') {
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //   SnackBar(content: Text('Error: Image upload failed.'))
+                          // );
+                          // return;
+                          // }
                           _formKey.currentState!.save();
                           _submitItem(context);
                         }
@@ -187,7 +196,8 @@ class _ItemListingState extends State<ItemListing> {
 Future<void> _pickImageFromGallery() async {
   final returnedImage = await ImagePicker().pickImage(
     source: ImageSource.gallery,
-    preferredCameraDevice: CameraDevice.rear,
+    //imageQuality: 85, // Reduce file size
+    //preferredCameraDevice: CameraDevice.rear,
   );
 
   if (returnedImage == null) {
@@ -195,15 +205,21 @@ Future<void> _pickImageFromGallery() async {
     return;
   }
 
-  // Convert HEIF to PNG/JPG
-  final File convertedImage = File('${returnedImage.path}.jpg');
-  await returnedImage.saveTo(convertedImage.path);
+  // Convert HEIF to JPG
+  // final File convertedImage = File('${returnedImage.path}.jpg');
+  //await returnedImage.saveTo(convertedImage.path);
 
   setState(() {
-    _selectedImage = convertedImage;
+    _selectedImage = returnedImage as File?;
   });
 
-  await getUrl(); // Upload after selection
+  //await getUrl(); // ✅ Ensure upload happens after conversion
+
+  // if (imageURL == null) {
+  //   print("Image upload failed.");
+  // } else {
+  //   print("Image successfully uploaded: $imageURL");
+  // }
 }
 
   void _submitItem(BuildContext context) async {
@@ -211,7 +227,7 @@ Future<void> _pickImageFromGallery() async {
     String valueCat = _inputValueC ?? '';
     String valueName = _inputValueN ?? '';
     String valueDescription = _inputValueD ?? '';
-    String url = imageURL ?? 'error';
+    //String url = imageURL ?? 'error';
     try {
       final result = await apiService.addItem(
         name: valueName, 
@@ -219,7 +235,7 @@ Future<void> _pickImageFromGallery() async {
         category: valueCat,
         description: valueDescription,
         sellerName: widget.usernameH,
-        imageUrl: url,
+       // imageUrl: '',
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Success: ${result["message"]}')),
@@ -231,19 +247,19 @@ Future<void> _pickImageFromGallery() async {
     }
   }
 
-Future<void> getUrl() async { 
-  if (_selectedImage == null) return;
+// Future<void> getUrl() async { 
+//   if (_selectedImage == null) return;
 
-  try { 
-    Map<String, dynamic> fetchedUrl = await apiService.uploadImageToBackend(_selectedImage!) ?? {};
-    setState(() { 
-      urlMap = fetchedUrl;
-      imageURL = urlMap['image_url']; // Ensure UI updates
-      _showWidget = true; // Display the widget
-    }); 
-  } catch (e) { 
-    print("Error getting URL: $e"); 
-  } 
-}
+//   try { 
+//     Map<String, dynamic> fetchedUrl = await apiService.uploadImageToBackend(_selectedImage!) ?? {};
+//     setState(() { 
+//       urlMap = fetchedUrl;
+//       imageURL = urlMap['image_url']; // Ensure UI updates
+//       _showWidget = true; // Display the widget
+//     }); 
+//   } catch (e) { 
+//     print("Error getting URL: $e"); 
+//   } 
+// }
 }
     

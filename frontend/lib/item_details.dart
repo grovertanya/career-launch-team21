@@ -6,14 +6,14 @@ import 'package:frontend/connection.dart';
 //we need a backend function in this file for retreiving user data based on the username under the item
 
 class ItemDetails extends StatefulWidget {
-  const ItemDetails({super.key, required this.name, required this.description, required this.price, required this.itemUsername, required this.imageUrl, required this.usernameID, required this.id});
+  const ItemDetails({super.key, required this.name, required this.description, required this.price, required this.itemUsername, required this.usernameID, required this.id});
 
   final String name;
   final String description;
   final double price;
   final String itemUsername;
   //final double userRating;
-  final String imageUrl;
+ // final String imageUrl;
   final String usernameID;
   final String id;
   @override
@@ -46,12 +46,12 @@ class _ItemDetailsState extends State<ItemDetails> {
                     bottomLeft: Radius.circular(30),
                     bottomRight: Radius.circular(30),
                   ),
-                  child: Image.network(widget.imageUrl), //replace with imageUrl once its integrated through backend 
+                  child: Image.asset('assets/images/placeholder.webp'), //replace with imageUrl once its integrated through backend 
                 ),
               ),
               //wrap in padding
               Padding(
-                padding: const EdgeInsets.fromLTRB(20,20,20,0),
+                padding: const EdgeInsets.fromLTRB(10,10,10,0),
                 child: Text(
                   widget.name,
                   style: TextStyle(
@@ -61,7 +61,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20,20,20,0),
+                padding: const EdgeInsets.fromLTRB(10,10,10,0),
                 child: Text(
                   widget.description,
                   style: TextStyle(
@@ -71,7 +71,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20,20,20,0),
+                padding: const EdgeInsets.fromLTRB(10,10,10,0),
                 child: Text(
                   '\$${widget.price}',
                   style: TextStyle(
@@ -81,9 +81,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20,20,20,0),
+                padding: const EdgeInsets.fromLTRB(10,10,10,0),
                 child: Text(
-                  'Sold by: ${widget.itemUsername}, ${user[0]['rating']}', //this is where we would put the rating
+                  'Sold by: ${widget.itemUsername}, ${user.isNotEmpty ? user[0]['rating'] : "No rating available"}',
                   style: TextStyle(
                     fontSize: 20,
                     color: const Color.fromARGB(255, 119, 119, 119),
@@ -91,7 +91,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20,20,0,20),
+                padding: const EdgeInsets.fromLTRB(10,10,0,10),
                 child: SizedBox(
                   child: ElevatedButton(
                     onPressed: (){},
@@ -106,7 +106,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20,20,0,20),
+                padding: const EdgeInsets.fromLTRB(10,10,0,10),
                 child: SizedBox(
                   child: ElevatedButton(
                     onPressed: (){},
@@ -167,6 +167,22 @@ class _ItemDetailsState extends State<ItemDetails> {
     } catch (e) { 
         print("Error searching by category: $e"); 
     } 
+  }
+
+    void addToWidhlist(BuildContext context) async {
+    try {
+      final result = await apiService.addToWishlist(
+        user: widget.usernameID,
+        id: widget.id,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Success: ${result["message"]}')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
   }
 
 }
