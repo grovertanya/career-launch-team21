@@ -25,6 +25,10 @@ class User:
     def add_to_wishlist(self, item):
         self.wishlist.append(item)
 
+    # remove from Wishlist
+    def remove_from_wishlist(self, item):
+        self.wishlist.remove(item)
+    
     # Rate another user
     def rate_another_user(self, other_user, rating):
 

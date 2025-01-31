@@ -37,3 +37,18 @@ def search_item_by_id(items, item_id):
         if str(item.id) == str(item_id):  # Ensure both are compared as strings
             return item
     return None  # Return None if not found
+
+def search_items_wishlist(items, User):
+ 
+    # Assuming there is a User model and each user has a wishlist attribute (a list of item IDs)
+    user = User # Fetch the user
+
+    if not user or not hasattr(user, 'wishlist'):
+        return None  # Return None if user doesn't exist or has no wishlist
+    
+    wishlist_item = user.wishlist  # Assuming wishlist is a list of item IDs
+    
+    # Filter items that match the wishlist item IDs
+    wishlist_items = [item for item in items if item in wishlist_item]
+
+    return wishlist_item

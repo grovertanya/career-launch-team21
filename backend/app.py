@@ -29,6 +29,42 @@ def get_items():
     items_list = [{"id": item.id, "name": item.name, "price": item.price, "category": item.category, "seller": item.seller.username, "description" : item.description, "imageurl": item.imageurl} for item in items]
     return jsonify(items_list)
 
+# get all items from users wishlist
+@app.route('/users/wishlist', methods=['GET'])
+def get_items_inWishlist():
+    username = request.args.get('username')  # Get username from request
+    
+    if not username:
+        return jsonify({"error": "Username is required"}), 400  # Handle missing username
+    
+    user = search_users(users, username)  # Retrieve user object
+    
+    if not user:  # If no user found
+        return jsonify({"error": "User not found"}), 404
+
+    user = user[0]  # Extract the first user from the list
+    
+    wishlist_items = user.wishlist  # Directly access the wishlist list
+    
+    if not wishlist_items:  # If wishlist is empty
+        return jsonify({"message": "No wishlist items available"}), 201
+
+    # Convert to JSON-friendly format
+    items_list = [
+        {
+            "id": item.id,
+            "name": item.name,
+            "price": item.price,
+            "category": item.category,
+            "seller": item.seller.username,
+            "description": item.description,
+            "imageurl": item.imageurl
+        } 
+        for item in wishlist_items
+    ]
+    
+    return jsonify(items_list)
+
 # search for an item by category ( buttons )
 @app.route('/items/searchCategory', methods=['GET'])
 def searchCategory():
@@ -64,6 +100,31 @@ def get_userUsername():
 
     return jsonify([{"name": user.name,"username": user.username, "rating": user.rating, "rating count": user.ratingcount} for user in found_user]), 200
 
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# sending the IMAGE URL
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'image' not in request.files:
+        return jsonify({"error": "No image file found"}), 400
+
+    image = request.files['image']
+
+    if image.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    filename = secure_filename(image.filename)
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    image.save(file_path)
+
+    # Generate the URL (Modify based on your hosting setup)
+    # ** change IP address
+    file_url = f"http://10.174.129.101:5000/uploads/{filename}"
+
+    return jsonify({"image_url": file_url}), 200
+
 # POST METHODS
 
 # add a user
@@ -81,7 +142,7 @@ def add_user():
 
 # add item to wishlist
 # Input: Username, Item ID / Item name
-@app.route('/users/wishlist', methods=['POST'])
+@app.route('/users/wishlist/add', methods=['POST'])
 def add_to_wishlist():
     username = request.args.get('username')
     itemID = request.args.get('id')
@@ -99,6 +160,31 @@ def add_to_wishlist():
         return jsonify({"error": "User not found"}), 404
     
     user[0].add_to_wishlist(item)
+
+    return jsonify({"message": f"Item {item.name} added to {user[0].name}'s wishlist"}), 200
+
+# remove item from wishlist
+# Input: Username, Item ID / Item name
+@app.route('/users/wishlist/remove', methods=['POST'])
+def remove_from_wishlist():
+    username = request.args.get('username')
+    itemID = request.args.get('id')
+
+     # Ensure inputs are provided
+    if not itemID or not username:
+        return jsonify({"error": "Missing 'itemID' or 'username'"}), 400
+
+    item =  search_item_by_id(items, itemID)
+    if not item:
+         return jsonify({"error": "Item not found"}), 404
+    
+    user = search_users(users, username)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    
+    user[0].remove_from_wishlist(item)
+
+    return jsonify({"message": f"Item {item.name} removed from {user[0].name}'s wishlist"}), 200
 
 
 
@@ -121,9 +207,6 @@ def item_checkout():
 
     return jsonify({"message": f"Item {item.name} marked as sold by {username}"}), 200
 
-
-# remove from wishlist 
-# Input: Item ID, username
 
 # add an item
 # recieves a JSON object with the item's name, price, category, and the seller's name
@@ -205,33 +288,8 @@ def rate_user():
         "new_rating": seller.rating
     }), 200
 
-UPLOAD_FOLDER = "uploads"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-# sending the IMAGE URL
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    if 'image' not in request.files:
-        return jsonify({"error": "No image file found"}), 400
-
-    image = request.files['image']
-
-    if image.filename == '':
-        return jsonify({"error": "No selected file"}), 400
-
-    filename = secure_filename(image.filename)
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    image.save(file_path)
-
-    # Generate the URL (Modify based on your hosting setup)
-    # ** change IP address
-    file_url = f"http://10.174.129.101:5000/uploads/{filename}"
-
-    return jsonify({"image_url": file_url}), 200
-
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', debug=True)
-    #app.run(debug=True)
+    #app.run(host = '0.0.0.0', debug=True)
+    app.run(debug=True)
 
 
