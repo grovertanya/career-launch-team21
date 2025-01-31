@@ -212,10 +212,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # sending the IMAGE URL
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    if 'image' not in request.files:
+    if 'file' not in request.files:
         return jsonify({"error": "No image file found"}), 400
 
-    image = request.files['image']
+    image = request.files['file']
 
     if image.filename == '':
         return jsonify({"error": "No selected file"}), 400

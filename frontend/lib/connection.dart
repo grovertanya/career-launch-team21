@@ -160,21 +160,28 @@ class ApiService {
     }
   }
 
-  Future<String?> uploadImageToBackend(File imageFile) async {
-  final uri = Uri.parse("http://10.174.129.101:5000/upload");
-  final request = http.MultipartRequest("POST", uri);
+ Future<Map<String, dynamic>?> uploadImageToBackend(File imageFile) async {
+  try {
+    final uri = Uri.parse("http://10.174.129.101:5000/upload");
+    final request = http.MultipartRequest("POST", uri);
 
-  request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
-  //we may have to add some sort of image key in the map
-  final response = await request.send();
-  if (response.statusCode == 200) {
-    final responseBody = await response.stream.bytesToString();
-    // Parse the URL from the response (assuming plain URL is returned)
-    print("Response from backend: $responseBody");
-    return responseBody;
-  } else {
-    print("Upload failed: ${response.statusCode}");
-    return null;
+    request.files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+
+    final response = await request.send();
+    final responseNew = await http.Response.fromStream(response);
+
+    print("Response Code: ${response.statusCode}");
+    print("Response Body: ${responseNew.body}");
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(responseNew.body);
+      return data;
+    } else {
+      return null;
+    }
+  } catch (e) {
+    print("Upload Error: $e");
+    return {"image_url": "Upload failed due to an exception", "exception": e.toString()};
   }
 }
 

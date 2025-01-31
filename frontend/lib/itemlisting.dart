@@ -28,6 +28,7 @@ class _ItemListingState extends State<ItemListing> {
   File ? _selectedImage;
   String? imageURL;
   bool _showWidget = false;
+  Map<String,dynamic> urlMap = {};
 
   //need to create an id variable that we can set equal to the id but not display in each section that can be passed in (this is important for checkout)
 
@@ -70,7 +71,12 @@ class _ItemListingState extends State<ItemListing> {
           ElevatedButton(
             onPressed: () async {
               _pickImageFromGallery();
-              imageURL = await apiService.uploadImageToBackend(_selectedImage!);
+              // if (_selectedImage == null) {
+              //   print("No image selected");
+              // }else{
+              //   getUrl();
+              // }
+              imageURL = urlMap['image_url'];
               _showWidget = true;
             }, 
             child: const Text(
@@ -155,9 +161,9 @@ class _ItemListingState extends State<ItemListing> {
                     },
                   ),
                   SizedBox(height: 20,),
-                  //_selectedImage != null ?  Image.file(_selectedImage!) : const Text('Please select an Image'),
-                  if (_showWidget == true) 
-                    Text(imageURL!),
+                  _selectedImage != null ?  Image.file(_selectedImage!) : const Text('Please select an Image'),
+                  //if (_showWidget == true) 
+                    //Text(imageURL!),
                   
                   ElevatedButton(
                       onPressed: () {
@@ -178,14 +184,27 @@ class _ItemListingState extends State<ItemListing> {
     );
   }
 
-  Future _pickImageFromGallery() async {
-    final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+Future<void> _pickImageFromGallery() async {
+  final returnedImage = await ImagePicker().pickImage(
+    source: ImageSource.gallery,
+    preferredCameraDevice: CameraDevice.rear,
+  );
 
-
-    setState(() {
-      _selectedImage = File(returnedImage!.path);
-    });
+  if (returnedImage == null) {
+    print("No image selected");
+    return;
   }
+
+  // Convert HEIF to PNG/JPG
+  final File convertedImage = File('${returnedImage.path}.jpg');
+  await returnedImage.saveTo(convertedImage.path);
+
+  setState(() {
+    _selectedImage = convertedImage;
+  });
+
+  await getUrl(); // Upload after selection
+}
 
   void _submitItem(BuildContext context) async {
     double valueNum = _inputValue ?? 0.0;
@@ -211,5 +230,20 @@ class _ItemListingState extends State<ItemListing> {
       );
     }
   }
+
+Future<void> getUrl() async { 
+  if (_selectedImage == null) return;
+
+  try { 
+    Map<String, dynamic> fetchedUrl = await apiService.uploadImageToBackend(_selectedImage!) ?? {};
+    setState(() { 
+      urlMap = fetchedUrl;
+      imageURL = urlMap['image_url']; // Ensure UI updates
+      _showWidget = true; // Display the widget
+    }); 
+  } catch (e) { 
+    print("Error getting URL: $e"); 
+  } 
+}
 }
     
